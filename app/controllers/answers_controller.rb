@@ -1,10 +1,11 @@
 class AnswersController < ApplicationController
   expose :answers, -> { Answer.all }
-  expose :answer
   expose :question, -> { Question.find(params[:question_id]) }
+  expose :answer, parent: :question
 
   def create
     @answer = question.answers.new(answer_params)
+
     if @answer.save
       redirect_to @answer
     else
