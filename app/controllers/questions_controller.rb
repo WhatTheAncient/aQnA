@@ -3,10 +3,8 @@ class QuestionsController < ApplicationController
   expose :question
 
   def create
-    @question = Question.new(question_params)
-
-    if @question.save
-      redirect_to @question
+    if question.save
+      redirect_to question
     else
       render :new
     end

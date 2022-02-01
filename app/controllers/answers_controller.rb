@@ -4,10 +4,8 @@ class AnswersController < ApplicationController
   expose :answer, parent: :question
 
   def create
-    @answer = question.answers.new(answer_params)
-
-    if @answer.save
-      redirect_to @answer
+    if answer.save
+      redirect_to answer
     else
       render :new
     end
