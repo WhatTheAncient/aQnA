@@ -4,33 +4,29 @@ RSpec.describe QuestionsController, type: :controller do
   let (:question) { create(:question) }
 
   describe 'GET #index' do
-    before { get :index }
-
     it 'renders index view' do
+      get :index
       expect(response).to render_template :index
     end
   end
 
   describe 'GET #show' do
-    before { get :show, params: { id: question } }
-
     it 'renders show view' do
+      get :show, params: { id: question }
       expect(response).to render_template :show
     end
   end
 
   describe 'GET #new' do
-    before { get :new }
-
     it 'renders new view' do
+      get :new
       expect(response).to render_template :new
     end
   end
 
   describe 'GET #edit'do
-    before { get :edit, params: { id: question } }
-
     it 'renders edit view' do
+      get :edit, params: { id: question }
       expect(response).to render_template :edit
     end
   end
@@ -48,7 +44,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'with invalid attributes'
-    it 'does not save the question'do
+    it 'does not save the question' do
       expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
     end
     it 're-renders new view' do
@@ -73,16 +69,17 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    context 'with invalid attributes'
-    before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) } }
-    it 'does not change the question'do
-      question.reload
+    context 'with invalid attributes' do
+      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) } }
+      it 'does not change the question'do
+        question.reload
 
-      expect(question.title).to eq 'MyString'
-      expect(question.body).to eq 'MyText'
-    end
-    it 're-renders edit view' do
-      expect(response).to render_template :edit
+        expect(question.title).to eq 'MyString'
+        expect(question.body).to eq 'MyText'
+      end
+      it 're-renders edit view' do
+        expect(response).to render_template :edit
+      end
     end
   end
 
