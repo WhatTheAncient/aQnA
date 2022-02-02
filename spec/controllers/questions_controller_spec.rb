@@ -4,11 +4,6 @@ RSpec.describe QuestionsController, type: :controller do
   let (:question) { create(:question) }
   let (:user) { create(:user) }
 
-  before do
-    @request.env['devise.mapping'] = Devise.mappings[:user]
-    sign_in(user)
-  end
-
   describe 'GET #index' do
     it 'renders index view' do
       get :index
@@ -25,19 +20,25 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'GET #new' do
     it 'renders new view' do
+      login(user)
+
       get :new
       expect(response).to render_template :new
     end
   end
 
-  describe 'GET #edit'do
+  describe 'GET #edit' do
     it 'renders edit view' do
+      login(user)
+
       get :edit, params: { id: question }
       expect(response).to render_template :edit
     end
   end
 
   describe 'POST #create' do
+    before { login(user) }
+
     context 'with valid attributes' do
       it 'saves a new question in the database' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
@@ -60,6 +61,8 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
+    before { login(user) }
+
     context 'with valid attributes' do
       it 'changes question attributes' do
         patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }
@@ -77,6 +80,7 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with invalid attributes' do
       before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) } }
+
       it 'does not change the question'do
         question.reload
 
@@ -91,6 +95,9 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'DELETE #destroy' do
     let!(:question) { create(:question) }
+
+    before { login(user) }
+
     it 'deletes the question' do
       expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
     end
