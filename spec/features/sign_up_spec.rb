@@ -5,9 +5,6 @@ feature 'User can sign up', %q{
   As an unregistered user
   I'd like to be able to sign up
 } do
-
-  given(:user) { User.create!(email: 'registered@test.com', password: 'password') }
-
   background { visit new_user_registration_path }
 
   scenario 'Unregistered user tries to sign up with correct passwords' do
@@ -28,6 +25,8 @@ feature 'User can sign up', %q{
   end
 
   scenario 'Registered user tries to sign up' do
+    user = create(:user)
+
     fill_in 'Email', with: user.email
     fill_in 'Password', with: user.password
     fill_in 'Password confirmation', with: user.password
