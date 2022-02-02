@@ -21,12 +21,10 @@ feature 'User can sign up', %q{
 
   scenario 'Unregistered user tries to sign up with incorrect unmatched passwords' do
     fill_in 'Email', with: 'new_user@test.com'
-    fill_in 'Password', with: '123'
-    fill_in 'Password confirmation', with: '1234'
+
     click_on 'Sign up'
 
-    expect(page).to have_content "Password confirmation doesn't match"
-    expect(page).to have_content 'Password is too short'
+    expect(page).to have_content "Password can't be blank"
   end
 
   scenario 'Registered user tries to sign up' do
