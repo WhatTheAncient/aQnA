@@ -25,6 +25,10 @@ gem 'slim-rails'
 gem 'decent_exposure'
 gem 'devise'
 
+#UI
+gem 'jquery-rails'
+gem 'bootstrap'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
