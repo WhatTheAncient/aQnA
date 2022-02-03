@@ -8,7 +8,7 @@ class QuestionsController < ApplicationController
 
   def show
     @answers = @question.answers
-    @answer = @answers.new
+    @answer = @question.answers.new
   end
 
   def new
@@ -16,7 +16,7 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = Question.new(question_params)
+    @question = current_user.created_questions.new(question_params)
 
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
@@ -35,7 +35,7 @@ class QuestionsController < ApplicationController
 
   def destroy
     @question.destroy
-    redirect_to questions_path
+    redirect_to questions_path, notice: 'Your question successfully deleted.'
   end
 
   private

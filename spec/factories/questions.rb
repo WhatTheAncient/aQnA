@@ -3,15 +3,15 @@ FactoryBot.define do
     "MyString#{n}"
   end
   factory :question do
-    title
+    title { "MyString" }
     body { "MyText" }
-
+    author { create(:user) }
+    factory :question_with_answers do
+      answers { FactoryBot.create_list(:answer, 5) }
+    end
 
     trait :invalid do
       title { nil }
-    end
-    factory :question_with_answers do
-      answers { FactoryBot.create_list(:answer, 5) }
     end
   end
 end
