@@ -5,14 +5,14 @@ feature 'User can delete answer', %q{
   I'd like to be able to delete my answer
 } do
 
-  given (:answer) { create(:answer) }
-  given (:question) { answer.question }
+  given (:question) { create(:question_with_answers) }
 
   describe 'Authenticated user' do
     scenario 'who author of answer' do
-      login(answer.author)
+      login(question.answers.first.author)
 
       visit question_path(question)
+
       click_on 'Delete answer'
 
       expect(page).to have_content 'Your answer successfully deleted.'
