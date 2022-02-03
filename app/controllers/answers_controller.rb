@@ -1,13 +1,14 @@
 class AnswersController < ApplicationController
-  expose :answers, -> { Answer.all }
-  expose :question, -> { Question.find(params[:question_id]) }
-  expose :answer, parent: :question
+  before_action :authenticate_user!
 
   def create
-    if answer.save
-      redirect_to answer
+    @answers = Answer.all
+    @question = Question.find(params[:question_id])
+    @answer = @question.answers.new(answer_params)
+    if @answer.save
+      redirect_to question_path(@question), notice: 'Your answer successfully sent.'
     else
-      render :new
+      render 'questions/show'
     end
   end
 

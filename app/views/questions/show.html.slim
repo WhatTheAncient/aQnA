@@ -1,2 +1,8 @@
-h1 = question.title
-p = question.body
+= render 'shared/errors', resource: @answer
+
+h1 = @question.title
+h4 = @question.body
+
+= render @answers
+
+= render 'answers/form'

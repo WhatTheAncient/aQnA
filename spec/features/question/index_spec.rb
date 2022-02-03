@@ -9,7 +9,7 @@ feature 'User can see list of questions', %q{
     questions = create_list(:question, 3)
 
     visit questions_path
-    save_and_open_page
+
     questions.each do |question|
       expect(page).to have_content question.title
       expect(page).to have_content question.body

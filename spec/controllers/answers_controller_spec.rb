@@ -1,40 +1,25 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let (:answer) { create(:answer) }
-
-  describe 'GET #show' do
-    it 'renders show view' do
-      get :show, params: { id: answer }
-      expect(response).to render_template :show
-    end
-  end
-
-  describe 'GET #new' do
-    it 'renders new view' do
-      get :new, params: { question_id: answer.question}
-      expect(response).to render_template :new
-    end
-  end
-
   describe 'POST #create' do
-    let (:question) { create(:question) }
+    let(:question) { create(:question) }
     context 'with valid attributes' do
       it 'saves created answer to db' do
         expect { post :create, params: { answer: attributes_for(:answer), question_id: question } }.to change(question.answers, :count).by(1)
       end
-      it 'redirects to show view' do
+      it 're-render questions' do
         post :create, params: { answer: attributes_for(:answer), question_id: question }
-        expect(response).to redirect_to assigns(:exposed_answer)
+
+        expect(response).to have_http_status(:found)
       end
     end
     context 'with invalid attributes' do
       it 'does not save the question' do
         expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question } }.to_not change(question.answers, :count)
       end
-      it 're-renders new view' do
+      it 're-renders questions' do
         post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }
-        expect(response).to render_template :new, params: { question_id: question }
+        expect(response).to have_http_status(:ok)
       end
     end
   end
