@@ -5,7 +5,7 @@ class AnswersController < ApplicationController
     @answers = Answer.all
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params)
-    @answer.author = current_user
+    @answer.set_author(current_user)
     if @answer.save
       redirect_to question_path(@question), notice: 'Your answer successfully sent.'
     else
@@ -22,6 +22,6 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body, :question_id)
   end
 end
