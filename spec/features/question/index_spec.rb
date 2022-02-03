@@ -5,6 +5,7 @@ feature 'User can see list of questions', %q{
   As user
   I'd like to be able to see list of all questions
 } do
+
   scenario 'User go to page with all questions' do
     questions = create_list(:question, 3)
 
