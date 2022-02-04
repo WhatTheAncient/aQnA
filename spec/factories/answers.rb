@@ -1,9 +1,6 @@
 FactoryBot.define do
-  sequence :body do |n|
-    body { "MyText#{n}" }
-  end
   factory :answer do
-    body { "MyText" }
+    sequence (:body) { |n| "MyText#{n}" }
     author { create(:user) }
     association :question
 

@@ -9,26 +9,30 @@ feature 'User can delete answer', %q{
 
   describe 'Authenticated user' do
     scenario 'who author of answer' do
-      login(question.answers.first.author)
+      answer = question.answers.first
 
+      login(answer.author)
       visit question_path(question)
+
+      expect(page).to have_content answer.body
 
       click_on 'Delete answer'
 
       expect(page).to have_content 'Your answer successfully deleted.'
+      expect(page).to_not have_content answer.body
     end
 
     scenario 'who not author of answer' do
       user = create(:user)
 
       login(user)
-      expect(page).to_not have_content 'Delete question'
+      expect(page).to_not have_link 'Delete answer'
     end
   end
 
   scenario 'Unauthenticated user' do
     visit question_path(question)
 
-    expect(page).to_not have_content 'Delete question'
+    expect(page).to_not have_link 'Delete answer'
   end
 end
