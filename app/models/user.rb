@@ -8,6 +8,6 @@ class User < ApplicationRecord
                              foreign_key: 'user_id', dependent: :destroy
 
   def author_of?(resource)
-    resource.user_id == id unless resource.new_record?
+    resource.user_id == id
   end
 end
