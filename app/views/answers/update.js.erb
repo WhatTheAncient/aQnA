@@ -1,0 +1,6 @@
+editedAnswer = document.getElementById('<%= @answer.id %>')
+editedAnswer.querySelector('.inline-answer-errors').innerHTML = '<%= render 'shared/errors', resource: @answer %>'
+
+<% unless @answer.errors.present? %>
+  editedAnswer.innerHTML = '<%= j render @answer %>'
+<% end %>

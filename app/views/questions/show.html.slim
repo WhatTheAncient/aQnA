@@ -7,6 +7,6 @@ h4 = @question.body
   = render @question.answers
 
 - if current_user
-  = render 'answers/form'
+  .new-answer-form = render 'answers/form'
 - else
   p.alert-warning You must sign in to answer the question

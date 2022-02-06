@@ -10,6 +10,7 @@ require('jquery_ujs')
 require("channels")
 
 import 'bootstrap';
+require("../utilities");
 
 var jQuery = require('jquery')
 

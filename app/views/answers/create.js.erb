@@ -4,5 +4,6 @@ document.querySelector('.answer-errors').innerHTML = '<%= render 'shared/errors'
   document.querySelector('.answers').insertAdjacentHTML('beforeend', '<%= render @answer %>')
   document.querySelector('.flash').innerHTML = '<%= render 'shared/flash' %>'
 
-  document.getElementById('answer_body').value = ''
+  newAnswerForm = document.querySelector('.new-answer-form')
+  newAnswerForm.querySelector('.text-field').value = ''
 <% end %>

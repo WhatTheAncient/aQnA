@@ -1,0 +1,8 @@
+.inline-answer-errors
+  = render 'shared/errors', resource: answer
+
+.inline-form = form_with model: answer, class: 'd-none', html: { id: "edit-answer-#{answer.id}" } do |f|
+  p
+    = f.label :body, 'Your answer'
+    = f.text_field :body
+    p.btn = f.submit 'Save'
