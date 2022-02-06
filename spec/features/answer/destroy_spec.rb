@@ -8,7 +8,7 @@ feature 'User can delete answer', %q{
   given (:question) { create(:question_with_answers) }
 
   describe 'Authenticated user' do
-    scenario 'who author of answer' do
+    scenario 'who author of answer', js: true do
       answer = question.answers.first
 
       login(answer.author)
