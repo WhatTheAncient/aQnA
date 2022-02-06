@@ -1,4 +1,5 @@
-p = answer.body
+.answer
+  p = answer.body
 
--if current_user&.author_of?(answer)
-  p.btn = link_to 'Delete answer', answer_path(answer), method:  :delete unless answer.new_record?
+  -if current_user&.author_of?(answer)
+    p.btn = link_to 'Delete answer', answer_path(answer), method:  :delete unless answer.new_record?

@@ -3,7 +3,12 @@ class AnswersController < ApplicationController
 
   def create
     @question = Question.find(params[:question_id])
-    @answer = @question.answers.create(answer_params.merge(author: current_user))
+    @answer = @question.answers.new(answer_params.merge(author: current_user))
+    if @answer.save
+      respond_to do |format|
+        format.js { flash.now[:notice] = 'Your answer successfully sent.' }
+      end
+    end
   end
 
   def destroy

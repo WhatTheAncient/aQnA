@@ -1,6 +1,8 @@
-$('.answer-errors').html('<%= render 'shared/errors', resource: @answer %>');
+document.querySelector('.answer-errors').innerHTML = '<%= render 'shared/errors', resource: @answer %>'
 
 <% if @answer.persisted? %>
-  $('.answers').append('<%= j render @answer %>')
-  $('#answer_body').val('')
+  document.querySelector('.answers').insertAdjacentHTML('beforeend', '<%= render @answer %>')
+  document.querySelector('.flash').innerHTML = '<%= render 'shared/flash' %>'
+
+  document.getElementById('answer_body').value = ''
 <% end %>
