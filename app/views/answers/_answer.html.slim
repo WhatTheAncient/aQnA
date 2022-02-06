@@ -1,5 +1,5 @@
 .answer  id = "#{answer.id}"
-  p = answer.body
+  p.answer-body = answer.body
 
   - if current_user&.author_of?(answer)
     p.btn = link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }, remote: true, method: :patch
