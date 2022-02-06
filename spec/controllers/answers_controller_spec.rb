@@ -10,21 +10,25 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with valid attributes' do
       it 'saves created answer to db' do
-        expect { post :create, params: { answer: attributes_for(:answer), question_id: question } }.to change(question.answers, :count).by(1)
+        expect { post :create,
+                      params: { answer: attributes_for(:answer), question_id: question },
+                      format: :js }.to change(question.answers, :count).by(1)
       end
       it 're-render question and answers' do
-        post :create, params: { answer: attributes_for(:answer), question_id: question }
+        post :create, params: { answer: attributes_for(:answer), question_id: question }, format: :js
 
-        expect(response).to have_http_status(:found)
+        expect(response).to render_template :create
       end
     end
     context 'with invalid attributes' do
       it 'does not save the question' do
-        expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question } }.to_not change(question.answers, :count)
+        expect { post :create,
+                      params: { answer: attributes_for(:answer, :invalid), question_id: question },
+                      format: :js }.to_not change(question.answers, :count)
       end
       it 're-renders question and answers' do
-        post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }
-        expect(response).to have_http_status(:ok)
+        post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }, format: :js
+        expect(response).to render_template :create
       end
     end
   end

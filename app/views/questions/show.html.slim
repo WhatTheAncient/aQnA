@@ -3,7 +3,7 @@ h4 = @question.body
 -if current_user&.author_of? (@question)
   p.btn = link_to 'Delete question', question_path(@question),
           method:  :delete
-
-= render @question.answers
+.answers
+  = render @question.answers
 
 = render 'answers/form'
