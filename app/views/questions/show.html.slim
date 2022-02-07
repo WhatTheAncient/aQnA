@@ -1,9 +1,12 @@
 h1 = @question.title
 h4 = @question.body
--if current_user&.author_of? (@question)
+- if current_user&.author_of? (@question)
   p.btn = link_to 'Delete question', question_path(@question),
           method:  :delete
+.answers
+  = render @question.answers
 
-= render @question.answers
-
-= render 'answers/form'
+- if current_user
+  .new-answer-form = render 'answers/form'
+- else
+  p.alert-warning You must sign in to answer the question

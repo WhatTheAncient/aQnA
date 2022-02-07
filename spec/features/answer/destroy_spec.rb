@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'User can delete answer', %q{
   As authenticated user
   I'd like to be able to delete my answer
-} do
+}, js: true do
 
   given (:question) { create(:question_with_answers) }
 

@@ -10,7 +10,7 @@ html
 
   body
     = render 'shared/nav'
-
-    p.notice = notice
-    p.alert = alert
+    .flash
+      p.notice = notice
+      p.alert = alert
     = yield
