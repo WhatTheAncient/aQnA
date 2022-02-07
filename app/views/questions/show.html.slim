@@ -9,4 +9,5 @@ h4 = @question.body
 - if current_user
   .new-answer-form = render 'answers/form'
 - else
-  p.alert-warning You must sign in to answer the question
+  p.alert-warning
+    | You must #{ link_to 'sign in', new_user_session_path, class: 'btn' } to answer the question

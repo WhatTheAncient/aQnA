@@ -41,5 +41,6 @@ feature 'User can answer the question', %q{
 
     expect(page).to_not have_link 'Send answer'
     expect(page).to have_content 'You must sign in to answer the question'
+    expect(page).to have_link 'sign in'
   end
 end

@@ -32,11 +32,20 @@ feature 'User can edit his answer', %q{
 
           expect(page).to_not have_content answer.body
           expect(page).to have_content 'edited answer'
-          expect(page).to have_selector 'textarea'
+          expect(page).to_not have_selector 'textarea'
         end
       end
 
-      scenario 'edit with invalid data'
+      scenario 'edit with invalid data' do
+        click_on 'Edit'
+        within '.answers' do
+          fill_in 'Your answer', with: ''
+          click_on 'Save'
+
+          expect(page).to have_content "Body can't be blank"
+          expect(page).to have_field 'Your answer'
+        end
+      end
     end
 
     scenario 'as not author of answer' do

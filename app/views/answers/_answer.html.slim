@@ -3,7 +3,7 @@
 
   - if current_user&.author_of?(answer)
     p.btn = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id:  answer.id }, remote: true, method: :patch
-    p.btn = link_to 'Delete answer', answer_path(answer), method:  :delete unless answer.new_record?
+    p.btn = link_to 'Delete answer', answer_path(answer), remote: true, method:  :delete unless answer.new_record?
 
     - if answer.persisted?
       = render 'answers/inline_form', answer: answer
