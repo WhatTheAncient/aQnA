@@ -8,16 +8,16 @@ function formInlineLinkHandler(event) {
     const editLinks = this.querySelectorAll('.edit-answer-link')
     for (let i = 0; i < editLinks.length; i++){
         if (event.target === editLinks[i]) {
-         event.stopImmediatePropagation()
+             event.preventDefault()
+             event.stopImmediatePropagation()
 
-         const answerId = editLinks[i].dataset.answerId
-         formInlineHandler(answerId)
+             const answerId = editLinks[i].dataset.answerId
+             formInlineHandler(answerId)
         }
     }
 }
 
 function formInlineHandler(answerId) {
-    console.log(answerId)
     const link = document.querySelector(`.edit-answer-link[data-answer-id="${answerId}"]`)
     const answer = document.getElementById(`${answerId}`)
     const answerErrors = answer.querySelector('.inline-answer-errors')

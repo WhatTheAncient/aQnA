@@ -13,7 +13,7 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update(answer_params.merge(author: current_user))
+    @answer.update(answer_params)
   end
 
   def destroy
