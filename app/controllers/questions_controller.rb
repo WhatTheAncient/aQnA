@@ -10,7 +10,6 @@ class QuestionsController < ApplicationController
     @best_answer = @question.best_answer
     @other_answers = @question.answers.where.not(id: @question.best_answer)
     @answer = @question.answers.new
-    byebug
   end
 
   def new
@@ -32,10 +31,8 @@ class QuestionsController < ApplicationController
   end
 
   def choose_best_answer
+    @answer = Answer.find(params[:answer_id])
     @question.update(best_answer_id: params[:answer_id]) if current_user.author_of?(@question)
-    @best_answer = @question.best_answer
-    @other_answers = @question.answers.where.not(id: @question.best_answer)
-    byebug
   end
 
   def destroy

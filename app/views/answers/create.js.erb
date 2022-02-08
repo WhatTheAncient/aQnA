@@ -1,7 +1,7 @@
 document.querySelector('.answer-errors').innerHTML = '<%= render 'shared/errors', resource: @answer %>'
 
 <% if @answer.persisted? %>
-  document.querySelector('.answers').insertAdjacentHTML('beforeend', '<%= render @answer %>')
+  document.querySelector('.answers').insertAdjacentHTML('beforeend', '<%= render @answer, answer_class: nil %>')
   document.querySelector('.flash').innerHTML = '<%= render 'shared/flash' %>'
 
   newAnswerForm = document.querySelector('.new-answer-form')

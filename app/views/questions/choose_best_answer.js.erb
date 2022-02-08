@@ -1,9 +1,7 @@
-let answers = document.querySelector('.answers')
+oldBestAnswer = document.querySelector('.best-answer')
+if (oldBestAnswer) oldBestAnswer.classList.remove('best-answer')
 
-<% if @best_answer %>
-  console.log(<%=@best_answer %>)
-  answers.innerHTML = '<%= render @best_answer %>'
- // answers.innerHTML += '<%= render @other_answers %>'
-<% else %>
-  answers.innerHTML = '<%= render @other_answers %>'
-<% end %>
+newBestAnswer = document.getElementById('answer-<%= @answer.id %>')
+newBestAnswer.parentNode.removeChild(newBestAnswer)
+
+document.querySelector('.answers').insertAdjacentHTML('afterbegin', '<%= render @question.best_answer, answer_class: 'best-answer' %>')

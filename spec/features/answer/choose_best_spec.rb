@@ -21,11 +21,8 @@ feature "User can choose best answer", %q{
           click_on 'Choose as the best'
         end
 
-        page.has_css?('.best-answer')
-
-        within '.best-answer' do
-          expect(page).to have_content answer.body
-        end
+        expect(page).to have_content answer.body
+        expect(page).to have_selector '.best-answer'
       end
 
       scenario 'id best answer already chosen' do
@@ -37,9 +34,7 @@ feature "User can choose best answer", %q{
           click_on 'Choose as the best'
         end
 
-        page.has_css?('.best-answer')
-
-        save_and_open_page
+        expect(page).to have_selector '.best-answer'
 
         within('.best-answer') do
           expect(page).to_not have_content old_best_answer.body

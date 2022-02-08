@@ -2,9 +2,8 @@
   = render @question
 
 .list-group.answers
-  - if @best_answer
-    .best-answer = render @best_answer
-  .other_answers = render @other_answers
+  = render @best_answer, answer_class: 'best-answer' if @best_answer
+  = render @other_answers, answer_class: nil
 
 - if current_user
   .new-answer-form = render 'answers/form'

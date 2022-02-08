@@ -143,12 +143,8 @@ RSpec.describe QuestionsController, type: :controller do
         patch :choose_best_answer, params: { id: question, answer_id: answer }, format: :js
       end
 
-      it 'assigns the chosen answer to @best_answer' do
-        expect(assigns(:best_answer)).to eq answer
-      end
-
-      it 'assigns all answers except @best_answer to @other_answers' do
-        expect(assigns(:other_answers)).to eq question.answers.where.not(id: answer)
+      it 'assigns the chosen answer to @answer' do
+        expect(assigns(:answer)).to eq answer
       end
 
       it 'should set question best answer' do
