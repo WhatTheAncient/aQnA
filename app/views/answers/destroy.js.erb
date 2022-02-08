@@ -1,7 +1,7 @@
 document.querySelector('.answer-errors').innerHTML = '<%= render 'shared/errors', resource: @answer %>'
 
 <% unless @answer.persisted? %>
-  toRemove = document.getElementById('<%= @answer.id %>')
+  toRemove = document.getElementById('answer-<%= @answer.id %>')
   toRemove.parentNode.removeChild(toRemove)
 
   document.querySelector('.flash').innerHTML = '<%= render 'shared/flash' %>'

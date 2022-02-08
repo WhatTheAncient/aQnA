@@ -132,4 +132,39 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #choose_best_answer' do
+    let!(:question) { create(:question_with_answers) }
+    let!(:answer) { question.answers[4] }
+
+    describe 'As author of question' do
+      before do
+        login(question.author)
+        patch :choose_best_answer, params: { id: question, answer_id: answer }, format: :js
+      end
+
+      it 'assigns the chosen answer to @best_answer' do
+        expect(assigns(:best_answer)).to eq answer
+      end
+
+      it 'assigns all answers except @best_answer to @other_answers' do
+        expect(assigns(:other_answers)).to eq question.answers.where.not(id: answer)
+      end
+
+      it 'should set question best answer' do
+        question.reload
+        expect(question.best_answer).to eq answer
+      end
+    end
+
+    describe 'As not author of question' do
+      let!(:user) { create(:user) }
+      before { login(user) }
+
+      it 'should not set question best answer' do
+        patch :choose_best_answer, params: { id: question, answer_id: answer }, format: :js
+        expect(question.best_answer).to_not eq answer
+      end
+    end
+  end
 end

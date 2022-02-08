@@ -1,4 +1,5 @@
-.answer id = "#{answer.id}"
+.answer.list-group-item  id = "answer-#{answer.id}"
+
   b.answer-body = answer.body
 
   - if current_user&.author_of?(answer)
@@ -7,3 +8,7 @@
 
     - if answer.persisted?
       = render 'answers/inline_form', answer: answer
+  br
+  - if current_user&.author_of?(answer.question)
+    = link_to 'Choose as the best', choose_best_answer_question_path(answer.question, answer_id: answer.id),
+                                    class: 'btn btn-success', remote: true, method: :patch

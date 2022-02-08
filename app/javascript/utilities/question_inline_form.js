@@ -1,14 +1,9 @@
 document.addEventListener('turbolinks:load', function() {
     const editLink = document.querySelector('.edit-question-link')
-    console.log(editLink)
     editLink.addEventListener('click', formInlineLinkHandler)
 })
 
 function formInlineLinkHandler(event) {
-    event.stopImmediatePropagation()
-    console.log(event.target)
-    event.preventDefault()
-
     formInlineHandler()
 }
 

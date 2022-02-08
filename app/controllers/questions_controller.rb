@@ -1,13 +1,16 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :find_question, only: %i[show update destroy]
+  before_action :find_question, only: %i[show update choose_best_answer destroy]
 
   def index
     @questions = Question.all
   end
 
   def show
+    @best_answer = @question.best_answer
+    @other_answers = @question.answers.where.not(id: @question.best_answer)
     @answer = @question.answers.new
+    byebug
   end
 
   def new
@@ -26,6 +29,13 @@ class QuestionsController < ApplicationController
 
   def update
     @question.update(question_params) if current_user.author_of?(@question)
+  end
+
+  def choose_best_answer
+    @question.update(best_answer_id: params[:answer_id]) if current_user.author_of?(@question)
+    @best_answer = @question.best_answer
+    @other_answers = @question.answers.where.not(id: @question.best_answer)
+    byebug
   end
 
   def destroy

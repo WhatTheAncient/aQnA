@@ -1,8 +1,10 @@
 .question
   = render @question
 
-.answers
-  = render @question.answers
+.list-group.answers
+  - if @best_answer
+    .best-answer = render @best_answer
+  .other_answers = render @other_answers
 
 - if current_user
   .new-answer-form = render 'answers/form'

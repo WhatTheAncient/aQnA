@@ -1,0 +1,9 @@
+let answers = document.querySelector('.answers')
+
+<% if @best_answer %>
+  console.log(<%=@best_answer %>)
+  answers.innerHTML = '<%= render @best_answer %>'
+ // answers.innerHTML += '<%= render @other_answers %>'
+<% else %>
+  answers.innerHTML = '<%= render @other_answers %>'
+<% end %>

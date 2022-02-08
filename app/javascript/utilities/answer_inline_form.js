@@ -19,7 +19,7 @@ function formInlineLinkHandler(event) {
 
 function formInlineHandler(answerId) {
     const link = document.querySelector(`.edit-answer-link[data-answer-id="${answerId}"]`)
-    const answer = document.getElementById(`${answerId}`)
+    const answer = document.getElementById(`answer-${answerId}`)
     const answerErrors = answer.querySelector('.inline-answer-errors')
     const formInline = document.getElementById(`edit-answer-${answerId}`)
 
