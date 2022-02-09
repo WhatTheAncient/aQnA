@@ -5,11 +5,7 @@ class AnswersController < ApplicationController
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params.merge(author: current_user))
-    if @answer.save
-      respond_to do |format|
-        format.js { flash.now[:notice] = 'Your answer successfully sent.' }
-      end
-    end
+    flash.now[:notice] = 'Your answer successfully sent.'  if @answer.save
   end
 
   def update
@@ -19,9 +15,7 @@ class AnswersController < ApplicationController
   def destroy
     if current_user.author_of?(@answer)
       @answer.destroy
-      respond_to do |format|
-        format.js { flash.now[:notice] = 'Your answer successfully deleted.' }
-      end
+      flash.now[:notice] = 'Your answer successfully deleted.'
     end
   end
 
