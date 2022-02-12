@@ -18,16 +18,26 @@ feature 'User can answer the question', %q{
       visit question_path(question)
     end
 
-    scenario 'answer the question' do
-      fill_in 'Your answer', with: 'Test question answer'
+    describe 'with valid data' do
+      background { fill_in 'Your answer', with: 'Test question answer' }
 
-      click_on 'Send answer'
+      scenario 'answer the question' do
+        click_on 'Send answer'
 
-      expect(page).to have_content 'Your answer successfully sent.'
-      within('.answers') do
-        expect(page).to have_content 'Test question answer'
+        expect(page).to have_content 'Your answer successfully sent.'
+        within('.answers') do
+          expect(page).to have_content 'Test question answer'
+        end
       end
-    end
+
+        scenario 'asks a question with attached files' do
+          attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+          click_on 'Send answer'
+
+          expect(page).to have_link 'rails_helper.rb'
+          expect(page).to have_link 'spec_helper.rb'
+        end
+      end
 
     scenario 'answer the question with invalid data' do
       click_on 'Send answer'
