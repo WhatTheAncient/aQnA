@@ -3,6 +3,7 @@ FactoryBot.define do
     sequence (:body) { |n| "MyText#{n}" }
     author { create(:user) }
     association :question
+    files { [] }
 
     trait :invalid do
       body { nil }

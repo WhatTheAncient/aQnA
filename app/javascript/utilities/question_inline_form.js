@@ -1,6 +1,6 @@
 document.addEventListener('turbolinks:load', function() {
     const editLink = document.querySelector('.edit-question-link')
-    editLink.addEventListener('click', formInlineLinkHandler)
+    editLink.addEventListener('click', formInlineHandler)
 })
 
 function formInlineHandler() {

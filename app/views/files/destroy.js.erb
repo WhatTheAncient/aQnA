@@ -1,0 +1,5 @@
+<% if @file.destroyed? %>
+  fileToDestroy = document.getElementById(`file-${<%= @file.id %>}`)
+  fileToDestroy.parentNode.removeChild(fileToDestroy)
+  document.quer
+<% end %>

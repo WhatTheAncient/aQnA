@@ -9,6 +9,7 @@ FactoryBot.define do
     factory :question_with_answers do
       answers { FactoryBot.create_list(:answer, 5) }
     end
+    files { [] }
 
     trait :invalid do
       title { nil }

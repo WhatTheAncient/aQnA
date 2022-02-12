@@ -6,8 +6,8 @@
     = f.label :body, 'Your answer'
     = f.text_field :body
 
-    = f.submit 'Save', class: 'btn'
     br
     = f.label :files
     = f.file_field :files, multiple: true, direct_upload: true
 
+    = f.submit 'Save', class: 'btn'
