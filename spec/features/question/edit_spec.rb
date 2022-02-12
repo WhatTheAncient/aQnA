@@ -22,19 +22,36 @@ feature 'User can edit his question', %q{
         login(user)
         visit question_path(question)
       end
+      describe 'with valid data' do
+        background do
+          within '.question' do
+            find('p', text: 'Edit question').click
+            fill_in 'Title', with: 'Edited title'
+            fill_in 'Body', with: 'Edited body'
+          end
+        end
 
-      scenario 'edit with valid data' do
-        within '.question' do
-          find('p', text: 'Edit question').click
-          fill_in 'Title', with: 'Edited title'
-          fill_in 'Body', with: 'Edited body'
-          click_on 'Save'
+        scenario 'edit question title and body' do
+          within '.question' do
+            click_on 'Save'
 
-          expect(page).to_not have_content question.title
-          expect(page).to_not have_content question.body
-          expect(page).to have_content 'Edited title'
-          expect(page).to have_content 'Edited body'
-          expect(page).to_not have_selector 'textarea'
+            expect(page).to_not have_content question.title
+            expect(page).to_not have_content question.body
+            expect(page).to have_content 'Edited title'
+            expect(page).to have_content 'Edited body'
+            expect(page).to_not have_selector 'textarea'
+          end
+        end
+
+        scenario 'add files while editing' do
+          within '.question' do
+            attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+
+            click_on 'Save'
+
+            expect(page).to have_link 'rails_helper.rb'
+            expect(page).to have_link 'spec_helper.rb'
+          end
         end
       end
 

@@ -3,10 +3,6 @@ document.addEventListener('turbolinks:load', function() {
     editLink.addEventListener('click', formInlineLinkHandler)
 })
 
-function formInlineLinkHandler(event) {
-    formInlineHandler()
-}
-
 function formInlineHandler() {
     const link = document.querySelector('.edit-question-link')
     const question = document.querySelector('.question')
