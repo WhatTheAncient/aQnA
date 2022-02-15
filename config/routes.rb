@@ -8,5 +8,7 @@ Rails.application.routes.draw do
     resources :answers, shallow: true, only: %i[create update destroy]
   end
 
+  resources :links, only: %i[destroy]
   resources :files, only: %i[destroy]
+  resources :rewards, only: %i[index]
 end

@@ -30,14 +30,14 @@ feature 'User can answer the question', %q{
         end
       end
 
-        scenario 'asks a question with attached files' do
-          attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
-          click_on 'Send answer'
+      scenario 'asks a question with attached files' do
+        attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Send answer'
 
-          expect(page).to have_link 'rails_helper.rb'
-          expect(page).to have_link 'spec_helper.rb'
-        end
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
       end
+    end
 
     scenario 'answer the question with invalid data' do
       click_on 'Send answer'

@@ -6,5 +6,6 @@ FactoryBot.define do
     email
     password { '12345678' }
     password_confirmation { '12345678' }
+    rewards { [] }
   end
 end

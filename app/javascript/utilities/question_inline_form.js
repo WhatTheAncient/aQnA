@@ -1,9 +1,10 @@
 document.addEventListener('turbolinks:load', function() {
     const editLink = document.querySelector('.edit-question-link')
-    editLink.addEventListener('click', formInlineHandler)
+    if (editLink) editLink.addEventListener('click', formInlineHandler)
 })
 
-function formInlineHandler() {
+function formInlineHandler(event) {
+    event.preventDefault()
     const link = document.querySelector('.edit-question-link')
     const question = document.querySelector('.question')
     const questionErrors = question.querySelector('.question-errors')

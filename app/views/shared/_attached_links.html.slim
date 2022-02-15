@@ -1,0 +1,11 @@
+- if resource.links.any?
+  p Links:
+  ul
+    - resource.links.each do |link|
+      div id="link-#{link.id}"
+        - if link.gist?
+          li.gist = javascript_include_tag(link.url + '.js')
+        - else
+          li.link.link-info = link_to link.name, link.url
+        - if current_user&.author_of?(link.linkable)
+          = link_to 'Delete link', link_path(link), method: :delete, remote: true, class: 'btn btn-outline-danger'

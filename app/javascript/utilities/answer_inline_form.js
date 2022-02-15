@@ -8,11 +8,11 @@ function formInlineLinkHandler(event) {
     const editLinks = this.querySelectorAll('.edit-answer-link')
     for (let i = 0; i < editLinks.length; i++){
         if (event.target === editLinks[i]) {
-             event.preventDefault()
-             event.stopImmediatePropagation()
+            event.preventDefault()
+            event.stopImmediatePropagation()
 
-             const answerId = editLinks[i].dataset.answerId
-             formInlineHandler(answerId)
+            const answerId = editLinks[i].dataset.answerId
+            formInlineHandler(answerId)
         }
     }
 }

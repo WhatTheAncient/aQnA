@@ -24,6 +24,7 @@ gem 'jbuilder', '~> 2.7'
 gem 'slim-rails'
 gem 'devise'
 gem 'aws-sdk-s3'
+gem 'cocoon'
 
 #UI
 gem 'jquery-rails'

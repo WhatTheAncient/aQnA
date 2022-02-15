@@ -9,4 +9,10 @@
     = f.label :files
     = f.file_field :files, class: 'file-field', multiple: true, direct_upload: true
 
+  p Links:
+  = f.fields_for :links do |link|
+    = render 'links/form', f: link
+  .links
+    = link_to_add_association 'Add link', f, :links, partial: 'links/form'
+
   p = f.submit 'Send answer', class: 'btn btn-outline-primary'

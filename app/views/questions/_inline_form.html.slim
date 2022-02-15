@@ -1,16 +1,22 @@
 .question-errors
-  = render 'shared/errors', resource: @question
+    = render 'shared/errors', resource: @question
 
 .inline-form.d-none = form_with model: @question do |f|
-  p
-    = f.label :title
-    = f.text_field :title
-    br
-    br
-    = f.label :body
-    = f.text_field :body
-    br
-    = f.label :files
-    = f.file_field :files, multiple: true, direct_upload: true
-    br
-    = f.submit 'Save', class: 'btn'
+    p
+        = f.label :title
+        = f.text_field :title
+        br
+        br
+        = f.label :body
+        = f.text_field :body
+        br
+        = f.label :files
+        = f.file_field :files, multiple: true, direct_upload: true
+        br
+        .links
+            p Links:
+            = f.fields_for :links do |link|
+                = render 'links/form', f: link
+            .links
+                = link_to_add_association 'Add link', f, :links, partial: 'links/form'
+        = f.submit 'Save', class: 'btn'

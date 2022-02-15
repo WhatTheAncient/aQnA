@@ -4,11 +4,40 @@ RSpec.describe Question, type: :model do
   it { should belong_to(:author) }
   it { should belong_to(:best_answer).optional }
   it { should have_many(:answers).dependent(:destroy) }
+  it { should have_many(:links).dependent(:destroy) }
+  it { should have_one(:reward).dependent(:destroy) }
 
   it { should validate_presence_of :title }
   it { should validate_presence_of :body }
 
+  it { should accept_nested_attributes_for :links }
+  it { should accept_nested_attributes_for :reward }
+
   it 'have many attached files' do
     expect(Question.new.files).to be_instance_of(ActiveStorage::Attached::Many)
+  end
+
+  describe '.set_best_answer' do
+    let!(:question) { create(:question_with_answers, best_answer: create(:answer)) }
+
+    describe 'answer in question.answers' do
+      let(:answer) { question.answers.first }
+      let!(:reward) { create :reward, question: question }
+      before { question.set_best_answer(answer) }
+
+      it 'should set best answer to question' do
+        expect(question.best_answer.id).to eq answer.id
+      end
+
+      it 'should set reward to answers author if it exists' do
+        expect(reward.user).to eq answer.author
+      end
+    end
+
+    it 'should not set best answer to question if this answer not in question.answers' do
+      answer = create(:answer)
+      question.set_best_answer(answer)
+      expect(question.best_answer.id).to_not eq answer.id
+    end
   end
 end

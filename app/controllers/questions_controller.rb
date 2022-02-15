@@ -10,15 +10,17 @@ class QuestionsController < ApplicationController
     @best_answer = @question.best_answer
     @other_answers = @question.answers.where.not(id: @question.best_answer)
     @answer = @question.answers.new
+    @answer.links.new
   end
 
   def new
     @question = Question.new
+    @question.links.new
+    @question.build_reward
   end
 
   def create
     @question = current_user.questions.new(question_params)
-
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
     else
@@ -32,7 +34,7 @@ class QuestionsController < ApplicationController
 
   def choose_best_answer
     @answer = Answer.find(params[:answer_id])
-    @question.update(best_answer_id: params[:answer_id]) if current_user.author_of?(@question)
+    @question.set_best_answer(@answer) if current_user.author_of?(@question)
   end
 
   def destroy
@@ -47,7 +49,8 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [])
+    params.require(:question).permit(:title, :body,
+                                     files: [], links_attributes: [:name, :url], reward_attributes: [:name, :image])
   end
 
   def find_question

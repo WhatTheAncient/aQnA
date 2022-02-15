@@ -37,7 +37,7 @@ RSpec.describe FilesController, type: :controller do
     end
 
     context 'answer' do
-      let!(:answer) { create :question, files: [file] }
+      let!(:answer) { create :answer, files: [file] }
       let!(:author) { answer.author }
 
       context 'as author' do

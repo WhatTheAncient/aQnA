@@ -25,7 +25,7 @@ feature 'User can edit his question', %q{
       describe 'with valid data' do
         background do
           within '.question' do
-            find('p', text: 'Edit question').click
+            click_on 'Edit question'
             fill_in 'Title', with: 'Edited title'
             fill_in 'Body', with: 'Edited body'
           end
@@ -57,7 +57,7 @@ feature 'User can edit his question', %q{
 
       scenario 'edit with invalid data' do
         within '.question' do
-          find('p', text: 'Edit question').click
+          click_on 'Edit question'
           fill_in 'Title', with: ''
           fill_in 'Body', with: ''
           click_on 'Save'

@@ -1,4 +1,5 @@
-= render 'shared/errors', resource: @question
+.question-errors
+  = render 'shared/errors', resource: @question
 
 = form_with model: @question, local: true do |f|
   p
@@ -12,4 +13,19 @@
     = f.label :files
     = f.file_field :files, multiple: true, direct_upload: true
 
-  p  = f.submit 'Ask', class: 'btn'
+  p Links:
+  = f.fields_for :links do |link|
+    = render 'links/form', f: link
+  .links
+    = link_to_add_association 'Add link', f, :links, partial: 'links/form'
+
+  p Reward:
+  = f.fields_for :reward do |reward|
+    = reward.label :name, 'Reward name'
+    = reward.text_field :name
+    br
+
+    = reward.label :image, 'Reward image'
+    = reward.file_field :image, direct_upload: true
+
+  = f.submit 'Ask', class: 'btn'
