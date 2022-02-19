@@ -1,11 +1,23 @@
 class AnswersController < ApplicationController
+  include Linked
+  include Filed
+  include Voted
+
   before_action :authenticate_user!
   before_action :find_answer, only: %i[update destroy]
 
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params.merge(author: current_user))
-    flash.now[:notice] = 'Your answer successfully sent.'  if @answer.save
+    flash.now[:notice] = 'Your answer successfully sent.' if @answer.save
+    #  AjaJSON code
+    #  respond_to do |format|
+    #   if @answer.save
+    #      format.json { render json: @answer }
+    #   else
+    #     format.json { render json: @answer.errors.full_messages, status: :unprocessable_entity }
+    #   end
+    #  end
   end
 
   def update

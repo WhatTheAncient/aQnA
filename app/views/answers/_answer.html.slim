@@ -1,6 +1,10 @@
+- answer_class = nil unless answer_class
 .answer.list-group-item id = "answer-#{answer.id}" class = answer_class
 
   b.answer-body = answer.body
+
+  .answer-vote
+    = render 'shared/votes', resource: answer
 
   .answer-files
     = render 'shared/attached_files', resource: answer

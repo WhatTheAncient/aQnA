@@ -1,6 +1,20 @@
 document.addEventListener('turbolinks:load', function() {
     const editLink = document.querySelector('.edit-question-link')
     if (editLink) editLink.addEventListener('click', formInlineHandler)
+
+    $('.question .vote-link').on('ajax:success', function (event) {
+        const vote = event.detail[0].vote
+        const rating = event.detail[0].rating
+
+        $('.question .vote-link').each(function(){ $(this).remove() })
+        $('.question .vote-rating').html(`Rating: ${rating}`)
+    })
+    $('.question .cancel-vote-link').on('ajax:success', function (event) {
+        const rating = event.detail[0].rating
+
+        $('.question .cancel-vote-link').remove()
+        $('.question .vote-rating').html(`Rating: ${rating}`)
+    })
 })
 
 function formInlineHandler(event) {

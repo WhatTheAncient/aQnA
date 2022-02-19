@@ -1,18 +1,18 @@
 .inline-answer-errors
-    = render 'shared/errors', resource: answer
+  = render 'shared/errors', resource: answer
 
-.inline-form = form_with model: answer, class: 'd-none', html: { id: "edit-answer-#{answer.id}" } do |f|
+.inline-form
+  = form_with model: answer, class: 'd-none', html: { id: "edit-answer-#{answer.id}" } do |f|
     p
-        = f.label :body, 'Your answer'
-        = f.text_field :body
+      = f.label :body, 'Your answer'
+      = f.text_field :body
+      br
+      = f.label :files
+      = f.file_field :files, multiple: true, direct_upload: true
 
-        br
-        = f.label :files
-        = f.file_field :files, multiple: true, direct_upload: true
-
-        p Links:
-        = f.fields_for :links do |link|
-            = render 'links/form', f: link
-        .links
-            = link_to_add_association 'Add link', f, :links, partial: 'links/form'
-        = f.submit 'Save', class: 'btn'
+      p Links:
+      = f.fields_for :links do |link|
+        = render 'links/form', f: link
+      .links
+        = link_to_add_association 'Add link', f, :links, partial: 'links/form'
+    = f.submit 'Save', class: 'btn'

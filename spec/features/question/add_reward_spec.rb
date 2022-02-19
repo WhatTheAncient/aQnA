@@ -25,8 +25,10 @@ feature 'User can add reward for best answer to question', %q{
 
       expect(page).to have_content 'Test question'
       expect(page).to have_content 'text text text'
-      within '.reward' do
-        expect(page).to have_content 'Test reward'
+      within '.question' do
+        within '.reward' do
+          expect(page).to have_content 'Test reward'
+        end
       end
     end
 

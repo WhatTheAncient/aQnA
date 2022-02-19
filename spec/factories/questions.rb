@@ -6,15 +6,24 @@ FactoryBot.define do
     title { "MyString" }
     body { "MyText" }
     author { create(:user) }
+    files { [] }
+    votes { [] }
 
     factory :question_with_answers do
       answers { FactoryBot.create_list(:answer, 5) }
     end
 
-    files { [] }
-
     factory :question_with_links do
       links { FactoryBot.create_list(:link_for_question, 3) }
+    end
+
+    factory :question_with_files do
+      files { [ Rack::Test::UploadedFile.new("#{Rails.root}/app/models/question.rb"),
+                Rack::Test::UploadedFile.new("#{Rails.root}/app/models/answer.rb")] }
+    end
+
+    factory :question_with_votes do
+      votes { FactoryBot.create_list(:vote_for_question, 3) }
     end
 
     trait :invalid do

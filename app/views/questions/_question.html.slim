@@ -1,10 +1,17 @@
-.list-group-item
+.list-group-item.question
   .question-data
     h1 = question.title
     h4 = question.body
   - if @questions
+    .question-vote
+      = render 'shared/votes', resource: question
+
     = link_to 'See Answers', question, class: 'btn'
   - else
+    .reward
+      - if question.reward
+        p Reward:
+        = question.reward.name
     .question-files
       = render 'shared/attached_files', resource: @question
     .question-links

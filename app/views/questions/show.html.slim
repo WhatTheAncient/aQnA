@@ -1,7 +1,6 @@
-.question
-  = render @question
-  .reward
-    = @question.reward.name if @question.reward
+= render @question
+.reward
+  = @question.reward.name if @question.reward
 
 .list-group.answers
   = render @best_answer, answer_class: 'best-answer' if @best_answer

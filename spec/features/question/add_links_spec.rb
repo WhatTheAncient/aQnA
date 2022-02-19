@@ -69,7 +69,7 @@ feature 'User can add links to question', %q{
         fill_in 'Link name', with: google_urls[0].name
         fill_in 'Url', with: google_urls[0].url
 
-          click_on 'Add link'
+        click_on 'Add link'
 
         within all('.nested-fields').last do
           fill_in 'Link name', with: google_urls[1].name

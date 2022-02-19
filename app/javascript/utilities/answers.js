@@ -2,6 +2,37 @@ document.addEventListener('turbolinks:load', function() {
     const answers = document.querySelector('.answers')
     if (answers)
         answers.addEventListener('click', formInlineLinkHandler)
+
+    $('.answers .vote-link').on('ajax:success', function(event) {
+        console.log(event.detail)
+        const vote = event.detail[0].vote
+        const rating = event.detail[0].rating
+        const answer_id = vote.votable_id
+
+        $(`#answer-${answer_id} .vote-link`).each(function(){ $(this).remove() })
+        $(`#answer-${answer_id} .vote-rating`).html(`Rating: ${rating}`)
+    })
+
+    $('.answers .cancel-vote-link').on('ajax:success', function(event) {
+        const rating = event.detail[0].rating
+        const answer_id = event.detail[0].votable_id
+
+        $(`#answer-${answer_id} .cancel-vote-link`).remove()
+        $(`#answer-${answer_id} .vote-rating`).html(`Rating: ${rating}`)
+    })
+
+    /*  Ajajson handlers
+    $('form.new-answer').on('ajax:success', function(e) {
+        const answer = e.detail[0]
+        if (answer.body) $('.answers').append(`<p> ${answer.body} </p>`)
+    })
+        .on('ajax:error', function(e) {
+            const errors = e.detail[0]
+            $.each(errors, function(index, value) {
+                $('.answer-errors').append(`<p> ${value} </p>`)
+            })
+        })
+     */
 })
 
 function formInlineLinkHandler(event) {

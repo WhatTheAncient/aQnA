@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
+  it_behaves_like 'linked'
+  it_behaves_like 'filed'
+  it_behaves_like 'voted'
+
   let(:user) { create(:user) }
 
   describe 'POST #create' do

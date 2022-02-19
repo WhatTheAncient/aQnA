@@ -1,6 +1,7 @@
 - if resource.files.attached?
-  - resource.files.each do |file|
-    div id="file-#{file.id}"
-      = link_to file.filename.to_s, url_for(file)
-      - if current_user&.author_of?(resource)
-        = link_to 'Delete file', file_path(file), remote: true, method: :delete, class: 'btn btn-outline-danger'
+      - resource.files.each do |file|
+            div id="file-#{file.id}"
+                  = link_to file.filename.to_s, url_for(file)
+                  - if current_user&.author_of?(resource)
+                        = link_to 'Delete file', destroy_file_path(file, file_id: file.id),
+                                remote: true, method: :delete, class: 'btn btn-outline-danger'

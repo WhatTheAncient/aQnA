@@ -1,7 +1,7 @@
 .answer-errors
   = render 'shared/errors', resource: @answer
 
-= form_with model: [@question, @answer] do |f|
+= form_with model: [@question, @answer], remote: true do |f|
   p
     = f.label :body, 'Your answer'
     = f.text_field :body, class: 'text-field'
