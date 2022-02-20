@@ -5,15 +5,44 @@ document.addEventListener('turbolinks:load', function() {
     $('.question .vote-link').on('ajax:success', function (event) {
         const vote = event.detail[0].vote
         const rating = event.detail[0].rating
+        const question_id = vote.votable_id
 
-        $('.question .vote-link').each(function(){ $(this).remove() })
-        $('.question .vote-rating').html(`Rating: ${rating}`)
+        $(`#question-${question_id} .vote-link`).each(function(){ $(this).remove() })
+        $(`#question-${question_id} .vote-rating`).html(`Rating: ${rating}`)
+
+        let cancelLink = $(`<a href="/questions"
+                                onclick="$.ajax({
+                                    url: \`/questions/${question_id}/unvote?vote_id=${vote.id}\`,
+                                    type: 'DELETE',
+                                })"> Cancel vote </a>`)
+
+        cancelLink.addClass('btn btn-danger cancel-vote-link')
+        $(`#question-${question_id} .question-vote`).append(cancelLink)
     })
+
     $('.question .cancel-vote-link').on('ajax:success', function (event) {
         const rating = event.detail[0].rating
+        const question_id = event.detail[0].votable_id
 
         $('.question .cancel-vote-link').remove()
         $('.question .vote-rating').html(`Rating: ${rating}`)
+
+        let upVoteLink = $(`<a href="/questions"
+                                onclick="$.ajax({
+                                    url: \`/questions/${question_id}/vote?votable=Question&vote_state=good\`,
+                                    type: 'POST',
+                                })"> Good </a>`)
+
+        let downVoteLink = $(`<a href="/questions"
+                                onclick="$.ajax({
+                                    url: \`/questions/${question_id}/vote?votable=Question&vote_state=bad\`,
+                                    type: 'POST',
+                                })"> Bad </a>`)
+
+        upVoteLink.addClass('btn btn-outline-success vote-link')
+        let br = document.createElement('br')
+        downVoteLink.addClass('btn btn-outline-danger vote-link')
+        $(`#question-${question_id} .question-vote`).append(upVoteLink, br, downVoteLink)
     })
 })
 
