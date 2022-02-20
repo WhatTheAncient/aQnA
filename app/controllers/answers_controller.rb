@@ -1,6 +1,4 @@
 class AnswersController < ApplicationController
-  include Linked
-  include Filed
   include Voted
 
   before_action :authenticate_user!

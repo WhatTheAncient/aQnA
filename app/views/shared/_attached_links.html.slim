@@ -8,5 +8,4 @@
         - else
           li.link.link-info = link_to link.name, link.url
         - if current_user&.author_of?(link.linkable)
-          = link_to 'Delete link', destroy_link_path(link, link_id: link.id),
-                  method: :delete, remote: true, class: 'btn btn-outline-danger'
+          = link_to 'Delete link', link_path(link), method: :delete, remote: true, class: 'btn btn-outline-danger'

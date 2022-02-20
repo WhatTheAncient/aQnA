@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  it_behaves_like 'linked'
-  it_behaves_like 'filed'
   it_behaves_like 'voted'
 
   let (:question) { create(:question) }
