@@ -14,7 +14,7 @@ class User < ApplicationRecord
   end
 
   def voted_for?(votable)
-    vote_for(votable).nil? ? false : true
+    !!vote_for(votable)
   end
 
   def vote_for(votable)

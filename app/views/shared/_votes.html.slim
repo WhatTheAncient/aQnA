@@ -2,11 +2,11 @@ h5.vote-rating = "Rating: #{resource.rating}"
 
 - unless current_user&.author_of?(resource)
   - if current_user&.voted_for?(resource)
-    = link_to 'Cancel vote', unvote_path(resource, vote_id: current_user.vote_for(resource).id),
+    = link_to 'Cancel vote', polymorphic_path(resource, action: 'unvote', vote_id: current_user.vote_for(resource).id),
             method: :delete, remote: true, class: 'btn btn-danger cancel-vote-link'
   - elsif user_signed_in?
-    = link_to 'Good', vote_path(resource, vote_state: 'good', votable: resource.class.name),
+    = link_to 'Good', polymorphic_path(resource, action: 'vote', vote_state: 'good', votable: resource.class.name),
             method: :post, remote: true, class: 'btn btn-outline-success vote-link'
     br
-    = link_to 'Bad', vote_path(resource, vote_state: 'bad', votable: resource.class.name),
+    = link_to 'Bad', polymorphic_path(resource, action: 'vote', vote_state: 'bad', votable: resource.class.name),
             method: :post, remote: true, class: 'btn btn-outline-danger vote-link'

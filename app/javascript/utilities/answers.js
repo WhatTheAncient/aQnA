@@ -4,13 +4,29 @@ document.addEventListener('turbolinks:load', function() {
         answers.addEventListener('click', formInlineLinkHandler)
 
     $('.answers .vote-link').on('ajax:success', function(event) {
-        console.log(event.detail)
         const vote = event.detail[0].vote
         const rating = event.detail[0].rating
         const answer_id = vote.votable_id
 
         $(`#answer-${answer_id} .vote-link`).each(function(){ $(this).remove() })
         $(`#answer-${answer_id} .vote-rating`).html(`Rating: ${rating}`)
+
+        function sendAjaxDelete(vote) {
+            event.preventDefault()
+            $.ajax({
+                url: `/${vote.votable_type.toLowerCase()}s/${answer_id}/unvote?vote_id=${vote.id}`,
+                type: 'DELETE'
+            })
+        }
+
+        let cancelLink = $(`<a href=''
+                                onclick="$.ajax({
+                                    url: \`/answers/${answer_id}/unvote?vote_id=${vote.id}\`,
+                                    type: 'DELETE',
+                                })"> Cancel vote </a>`)
+
+        cancelLink.addClass('btn btn-outline-danger cancel-vote-link')
+        $(`#answer-${answer_id} .answer-vote`).append(cancelLink)
     })
 
     $('.answers .cancel-vote-link').on('ajax:success', function(event) {
@@ -19,6 +35,23 @@ document.addEventListener('turbolinks:load', function() {
 
         $(`#answer-${answer_id} .cancel-vote-link`).remove()
         $(`#answer-${answer_id} .vote-rating`).html(`Rating: ${rating}`)
+
+        let upVoteLink = $(`<a href=""
+                                onclick="$.ajax({
+                                    url: \`/answers/${answer_id}/vote?votable=Answer&vote_state=good\`,
+                                    type: 'POST',
+                                })"> Good </a>`)
+
+        let downVoteLink = $(`<a href=""
+                                onclick="$.ajax({
+                                    url: \`/answers/${answer_id}/vote?votable=Answer&vote_state=bad\`,
+                                    type: 'POST',
+                                })"> Bad </a>`)
+
+        upVoteLink.addClass('btn btn-outline-success vote-link')
+        let br = document.createElement('br')
+        downVoteLink.addClass('btn btn-outline-danger vote-link')
+        $(`#answer-${answer_id} .answer-vote`).append(upVoteLink, br, downVoteLink)
     })
 
     /*  Ajajson handlers
