@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Vote, type: :model do
-  subject { create(:vote_for_question) }
+  subject { create(:vote, votable: create(:question), user: create(:user), state: 'good') }
 
   it { should belong_to :votable }
   it { should belong_to :user }

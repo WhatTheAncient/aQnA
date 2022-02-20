@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :vote do
-    state { 1 }
+    state { 'good' }
     association :user
     factory :vote_for_question do
       user { create(:user) }
