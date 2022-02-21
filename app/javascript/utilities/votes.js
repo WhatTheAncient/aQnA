@@ -25,14 +25,22 @@ function voteHandler(resourceSelector) {
         $(`#${votableName.toLowerCase()}-${votableId} .vote-link`).each(function(){ $(this).remove() })
         $(`#${votableName.toLowerCase()}-${votableId} .vote-rating`).html(`Rating: ${rating}`)
 
+        let cancelVoteButton = $('<button/>', { text: 'Cancel vote' })
+        cancelVoteButton.addClass('btn btn-danger cancel-vote-link')
+
+
         const voteField = $(`#${votableName.toLowerCase()}-${votableId} .${votableName.toLowerCase()}-vote`)
-        voteField.append('<button>Cancel vote</button>')
-        voteField.$('button').addClass('btn btn-danger cancel-vote-link')
-        voteField.on('click', 'button', function() {
+
+        console.log(voteField)
+        console.log(cancelVoteButton)
+
+        voteField.append(cancelVoteButton)
+
+        voteField.find('button:contains("Cancel vote")').on("click", function() {
             $.ajax({
                 url: `/${votableName.toLowerCase()}s/${votableId}/unvote?vote_id=${vote.id}`,
                 type: 'DELETE',
-                success: $(this).trigger('ajax:success')
+                success: console.log('success')
             })
         })
 
@@ -50,26 +58,33 @@ function unvoteHandler(resourceSelector) {
 
         const voteField = $(`#${votableName.toLowerCase()}-${votableId} .${votableName.toLowerCase()}-vote`)
 
-        voteField.append('<button>Good</button>')
-        voteField.$('button:contains("Good")').addClass('btn btn-outline-success vote-link')
+        let goodVoteButton = $('<button/>', { text: 'Good' })
+        goodVoteButton.addClass('btn btn-outline-success vote-link')
 
         let br = document.createElement('br')
-        voteField.append(br)
 
-        voteField.append('<button>Bad</button>')
-        voteField.$('button:contains("Bad")').addClass('btn btn-outline-danger vote-link')
+        let badVoteButton = $('<button/>', { text: 'Bad' })
+        badVoteButton.addClass('btn btn-outline-danger vote-link')
 
-        voteField.$('button:contains("Good")').on('click', function(){
+        console.log(voteField)
+        console.log(goodVoteButton, badVoteButton)
+
+        voteField.append(goodVoteButton, br, badVoteButton)
+
+
+        voteField.find('button:contains("Good")').on('click', function(){
             $.ajax({
                 url: `/${votableName.toLowerCase()}s/${votableId}/vote?votable=${votableName}&vote_state=good`,
-                type: 'POST'
+                type: 'POST',
+                success: console.log('success')
             })
         })
 
-        voteField.$('button:contains("Bad")').on('click', function(){
+        voteField.find('button:contains("Bad")').on('click', function(){
             $.ajax({
                 url: `/${votableName.toLowerCase()}s/${votableId}/vote?votable=${votableName}&vote_state=bad`,
-                type: 'POST'
+                type: 'POST',
+                success: console.log('success')
             })
         })
     })
