@@ -28,18 +28,14 @@ function voteHandler(resourceSelector) {
         let cancelVoteButton = $('<button/>', { text: 'Cancel vote' })
         cancelVoteButton.addClass('btn btn-danger cancel-vote-link')
 
-
         const voteField = $(`#${votableName.toLowerCase()}-${votableId} .${votableName.toLowerCase()}-vote`)
-
-        console.log(voteField)
-        console.log(cancelVoteButton)
 
         voteField.append(cancelVoteButton)
 
         voteField.find('button:contains("Cancel vote")').on("click", function() {
             $.ajax({
                 url: `/${votableName.toLowerCase()}s/${votableId}/unvote?vote_id=${vote.id}`,
-                type: 'DELETE'
+                type: 'DELETE',
             })
         })
 
@@ -65,11 +61,7 @@ function unvoteHandler(resourceSelector) {
         let badVoteButton = $('<button/>', { text: 'Bad' })
         badVoteButton.addClass('btn btn-outline-danger vote-link')
 
-        console.log(voteField)
-        console.log(goodVoteButton, badVoteButton)
-
         voteField.append(goodVoteButton, br, badVoteButton)
-
 
         voteField.find('button:contains("Good")').on('click', function(){
             $.ajax({
