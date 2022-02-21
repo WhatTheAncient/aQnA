@@ -6,52 +6,44 @@ document.addEventListener('turbolinks:load', function() {
     $('.answers .vote-link').on('ajax:success', function(event) {
         const vote = event.detail[0].vote
         const rating = event.detail[0].rating
-        const answer_id = vote.votable_id
+        const answerId = vote.votable_id
 
-        $(`#answer-${answer_id} .vote-link`).each(function(){ $(this).remove() })
-        $(`#answer-${answer_id} .vote-rating`).html(`Rating: ${rating}`)
-
-        function sendAjaxDelete(vote) {
-            event.preventDefault()
-            $.ajax({
-                url: `/${vote.votable_type.toLowerCase()}s/${answer_id}/unvote?vote_id=${vote.id}`,
-                type: 'DELETE'
-            })
-        }
+        $(`#answer-${answerId} .vote-link`).each(function(){ $(this).remove() })
+        $(`#answer-${answerId} .vote-rating`).html(`Rating: ${rating}`)
 
         let cancelLink = $(`<a href=''
                                 onclick="$.ajax({
-                                    url: \`/answers/${answer_id}/unvote?vote_id=${vote.id}\`,
+                                    url: \`/answers/${answerId}/unvote?vote_id=${vote.id}\`,
                                     type: 'DELETE',
                                 })"> Cancel vote </a>`)
 
         cancelLink.addClass('btn btn-outline-danger cancel-vote-link')
-        $(`#answer-${answer_id} .answer-vote`).append(cancelLink)
+        $(`#answer-${answerId} .answer-vote`).append(cancelLink)
     })
 
     $('.answers .cancel-vote-link').on('ajax:success', function(event) {
         const rating = event.detail[0].rating
-        const answer_id = event.detail[0].votable_id
+        const answerId = event.detail[0].votable_id
 
-        $(`#answer-${answer_id} .cancel-vote-link`).remove()
-        $(`#answer-${answer_id} .vote-rating`).html(`Rating: ${rating}`)
+        $(`#answer-${answerId} .cancel-vote-link`).remove()
+        $(`#answer-${answerId} .vote-rating`).html(`Rating: ${rating}`)
 
         let upVoteLink = $(`<a href=""
                                 onclick="$.ajax({
-                                    url: \`/answers/${answer_id}/vote?votable=Answer&vote_state=good\`,
+                                    url: \`/answers/${answerId}/vote?votable=Answer&vote_state=good\`,
                                     type: 'POST',
                                 })"> Good </a>`)
 
         let downVoteLink = $(`<a href=""
                                 onclick="$.ajax({
-                                    url: \`/answers/${answer_id}/vote?votable=Answer&vote_state=bad\`,
+                                    url: \`/answers/${answerId}/vote?votable=Answer&vote_state=bad\`,
                                     type: 'POST',
                                 })"> Bad </a>`)
 
         upVoteLink.addClass('btn btn-outline-success vote-link')
         let br = document.createElement('br')
         downVoteLink.addClass('btn btn-outline-danger vote-link')
-        $(`#answer-${answer_id} .answer-vote`).append(upVoteLink, br, downVoteLink)
+        $(`#answer-${answerId} .answer-vote`).append(upVoteLink, br, downVoteLink)
     })
 
     /*  Ajajson handlers

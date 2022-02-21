@@ -15,7 +15,7 @@ module Voted
     @vote = Vote.find(params[:vote_id])
     if current_user.author_of?(@vote)
       @vote.destroy
-      render json: { rating: @vote.votable.rating, votable_id: @vote.votable.id }
+      render json: { votable_id: @vote.votable.id, rating: @vote.votable.rating, votable_name: @vote.votable.class.to_s }
     else
       head :forbidden
     end
