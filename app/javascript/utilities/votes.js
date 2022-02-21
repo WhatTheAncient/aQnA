@@ -39,8 +39,7 @@ function voteHandler(resourceSelector) {
         voteField.find('button:contains("Cancel vote")').on("click", function() {
             $.ajax({
                 url: `/${votableName.toLowerCase()}s/${votableId}/unvote?vote_id=${vote.id}`,
-                type: 'DELETE',
-                success: console.log('success')
+                type: 'DELETE'
             })
         })
 
@@ -75,16 +74,14 @@ function unvoteHandler(resourceSelector) {
         voteField.find('button:contains("Good")').on('click', function(){
             $.ajax({
                 url: `/${votableName.toLowerCase()}s/${votableId}/vote?votable=${votableName}&vote_state=good`,
-                type: 'POST',
-                success: console.log('success')
+                type: 'POST'
             })
         })
 
         voteField.find('button:contains("Bad")').on('click', function(){
             $.ajax({
                 url: `/${votableName.toLowerCase()}s/${votableId}/vote?votable=${votableName}&vote_state=bad`,
-                type: 'POST',
-                success: console.log('success')
+                type: 'POST'
             })
         })
     })
