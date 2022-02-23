@@ -1,0 +1,16 @@
+$('#<%= @comment.commentable_type.underscore %>-<%= @comment.commentable_id %> .comment-errors')
+    .html('<%= render 'shared/errors', resource: @comment %>')
+
+<% if @comment.persisted? %>
+  <% if @comment.commentable.comments.size > 1 %>
+    $('#<%=@comment.commentable_type.underscore %>-<%= @comment.commentable_id %> .comments .list-inline')
+        .append('<%= render @comment %>')
+  <% else %>
+    $('#<%=@comment.commentable_type.underscore %>-<%= @comment.commentable_id %> .comments .list-inline')
+        .html('<%= render 'shared/comments', resource: @comment.commentable %>')
+  <% end %>
+
+  $('#<%=@comment.commentable_type.underscore %>-<%= @comment.commentable_id %> .comment-form .text-field').val('')
+  $('#<%=@comment.commentable_type.underscore %>-<%= @comment.commentable_id %> .comment-form').addClass('d-none')
+  $('#<%=@comment.commentable_type.underscore %>-<%= @comment.commentable_id %> .add-comment-link').removeClass('d-none')
+<% end %>

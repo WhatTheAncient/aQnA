@@ -1,0 +1,38 @@
+- answer_class = nil unless answer_class
+.answer.list-group-item id = "answer-#{answer.id}" class = answer_class
+
+  b.answer-body = answer.body
+
+  .answer-vote
+    h5.vote-rating = "Rating: #{answer.rating}"
+    = link_to 'Good', polymorphic_path(answer, action: 'vote', vote_state: 'good', votable: answer.class.name),
+            method: :post, remote: true, class: 'btn btn-outline-success vote-link d-none'
+    br
+    = link_to 'Bad', polymorphic_path(answer, action: 'vote', vote_state: 'bad', votable: answer.class.name),
+            method: :post, remote: true, class: 'btn btn-outline-danger vote-link d-none'
+
+  .answer-files
+    - if answer.files.attached?
+      - answer.files.each do |file|
+        div id="file-#{file.id}"
+          = link_to file.filename.to_s, url_for(file)
+
+  .answer-links
+    - if answer.links.any?
+      p Links:
+      ul
+        - answer.links.each do |link|
+          div id="link-#{link.id}"
+            - if link.gist?
+              li.gist = javascript_include_tag(link.url + '.js')
+            - else
+              li.link.link-info = link_to link.name, link.url
+
+  .comments
+    .ul.list-inline
+      = render 'shared/comments', resource: answer
+    = link_to 'Add comment', '#', class: 'btn add-comment-link', data: { answer_id: answer.id }
+    = render 'comments/form', commentable: answer
+
+  = link_to 'Choose as the best', choose_best_answer_question_path(answer.question, answer_id: answer.id),
+          class: 'btn btn-success choose-as-best d-none', remote: true, method: :patch

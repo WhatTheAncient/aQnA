@@ -1,0 +1,4 @@
+- if resource.comments.any?
+  p Comments:
+  - resource.comments.each do |comment|
+    = render comment

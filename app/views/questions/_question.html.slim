@@ -16,7 +16,11 @@
       = render 'shared/attached_files', resource: @question
     .question-links
       = render 'shared/attached_links', resource: @question
-
+    .comments
+      .ul.list-inline
+        = render 'shared/comments', resource: @question
+      = link_to 'Add comment', '#', class: 'btn add-comment-link', data: { question_id: @question.id }
+      = render 'comments/form', commentable: @question
 
     - if current_user&.author_of?(@question)
       = render 'questions/inline_form'

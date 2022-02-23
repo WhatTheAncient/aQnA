@@ -3,13 +3,13 @@ $(document).on('turbolinks:load', function() {
     answerVotesHandler()
 })
 
-function questionVotesHandler(event) {
+export function questionVotesHandler(event) {
     const resourceSelector = '.question'
     voteHandler(resourceSelector)
     unvoteHandler(resourceSelector)
 }
 
-function answerVotesHandler(event) {
+export function answerVotesHandler(event) {
     const resourceSelector = '.answer'
     voteHandler(resourceSelector)
     unvoteHandler(resourceSelector)
@@ -22,7 +22,7 @@ function voteHandler(resourceSelector) {
         const votableId = vote.votable_id
         const votableName = vote.votable_type
 
-        $(`#${votableName.toLowerCase()}-${votableId} .vote-link`).each(function(){ $(this).remove() })
+        $(`#${votableName.toLowerCase()}-${votableId} .vote-link`).each(function() { $(this).remove() })
         $(`#${votableName.toLowerCase()}-${votableId} .vote-rating`).html(`Rating: ${rating}`)
 
         let cancelVoteButton = $('<button/>', { text: 'Cancel vote' })

@@ -2,6 +2,9 @@ document.addEventListener('turbolinks:load', function() {
     const answers = document.querySelector('.answers')
     if (answers)
         answers.addEventListener('click', formInlineLinkHandler)
+    const addCommentLinks = answers.querySelectorAll('.add-comment-link')
+    if (addCommentLinks.length)
+        addCommentLinks.forEach((link) => {link.addEventListener('click', commentFormHandler)})
 })
 
 function formInlineLinkHandler(event) {
@@ -34,4 +37,12 @@ function formInlineHandler(answerId) {
         formInline.classList.add('d-none')
         link.textContent = 'Edit'
     }
+}
+
+function commentFormHandler(event) {
+    event.preventDefault()
+    const answerId = event.target.dataset.answerId
+
+    $(`#answer-${answerId} .comment-form`).removeClass('d-none')
+    $(`#answer-${answerId} .add-comment-link`).addClass('d-none')
 }

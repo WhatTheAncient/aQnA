@@ -1,0 +1,14 @@
+.list-group-item.question id = "question-#{question.id}"
+  .question-data
+    h1 = question.title
+    h4 = question.body
+
+  .answer-vote
+    h5.vote-rating = "Rating: #{question.rating}"
+    = link_to 'Good', polymorphic_path(question, action: 'vote', vote_state: 'good', votable: question.class.name),
+            method: :post, remote: true, class: 'btn btn-outline-success vote-link d-none'
+    br
+    = link_to 'Bad', polymorphic_path(question, action: 'vote', vote_state: 'bad', votable: question.class.name),
+            method: :post, remote: true, class: 'btn btn-outline-danger vote-link d-none'
+
+  = link_to 'See Answers', question, class: 'btn'

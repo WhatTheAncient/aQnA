@@ -12,6 +12,12 @@
   .answer-links
     = render 'shared/attached_links', resource: answer
 
+  .comments
+    .ul.list-inline
+      = render 'shared/comments', resource: answer
+    = link_to 'Add comment', '#', class: 'btn add-comment-link', data: { answer_id: answer.id }
+    = render 'comments/form', commentable: answer
+
   - if current_user&.author_of?(answer)
     = link_to 'Edit', '#', class: 'edit-answer-link btn', data: { answer_id:  answer.id }, remote: true, method: :patch
     = link_to 'Delete answer', answer_path(answer), class: 'btn', remote: true, method:  :delete unless answer.new_record?

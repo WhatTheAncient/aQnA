@@ -1,0 +1,10 @@
+.comment-errors
+
+= form_with model: Comment.new, class: 'comment-form d-none', remote: true do |f|
+  p
+    = f.label :body
+    = f.text_field :body, class: 'text-field'
+  = hidden_field_tag :commentable_type, commentable.class.to_s
+  = hidden_field_tag :commentable_id, commentable.id
+
+  p = f.submit 'Comment', class: 'btn'

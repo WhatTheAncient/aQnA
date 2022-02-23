@@ -1,6 +1,8 @@
 document.addEventListener('turbolinks:load', function() {
     const editLink = document.querySelector('.edit-question-link')
     if (editLink) editLink.addEventListener('click', formInlineHandler)
+    const addCommentLink = $('.question .add-comment-link')
+    if (addCommentLink) addCommentLink.on('click', commentFormHandler)
 })
 
 function formInlineHandler(event) {
@@ -21,4 +23,11 @@ function formInlineHandler(event) {
         formInline.classList.add('d-none')
         link.textContent = 'Edit question'
     }
+}
+
+function commentFormHandler(event) {
+    event.preventDefault()
+    const questionId = event.target.dataset.questionId
+    $(`#question-${questionId} .comment-form`).removeClass('d-none')
+    $(`#question-${questionId} .add-comment-link`).addClass('d-none')
 }

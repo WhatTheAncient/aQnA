@@ -7,10 +7,10 @@ feature 'User can answer the question', %q{
   When I'm on question page
 }, js: true do
 
-  given (:question) { create(:question) }
+  given(:question) { create(:question) }
 
   describe 'Authenticated user' do
-    given (:user) { create(:user) }
+    given(:user) { create(:user) }
 
     background do
       login(user)
@@ -36,6 +36,31 @@ feature 'User can answer the question', %q{
 
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
+      end
+    end
+
+    context 'multiple sessions', js: true do
+      scenario "answer appears on another user's page" do
+        Capybara.using_session('user') do
+          login(user)
+          visit question_path(question)
+        end
+
+        Capybara.using_session('guest') do
+          visit question_path(question)
+        end
+
+        Capybara.using_session('user') do
+          fill_in 'Your answer', with: 'Test question answer'
+
+          click_on 'Send answer'
+
+          expect(page).to have_content 'Test question answer'
+        end
+
+        Capybara.using_session('guest') do
+          expect(page).to have_content 'Test question answer'
+        end
       end
     end
 

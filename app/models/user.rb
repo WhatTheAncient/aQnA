@@ -6,6 +6,8 @@ class User < ApplicationRecord
            foreign_key: 'user_id', dependent: :destroy
   has_many :answers, inverse_of: :author, class_name: 'Answer',
            foreign_key: 'user_id', dependent: :destroy
+  has_many :comments, inverse_of: :author, class_name: 'Comment',
+           foreign_key: 'user_id', dependent: :destroy
   has_many :rewards, dependent: :destroy
   has_many :votes, dependent: :destroy
 
