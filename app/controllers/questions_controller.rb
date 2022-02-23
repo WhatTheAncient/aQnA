@@ -3,6 +3,7 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: %i[index show]
   before_action :find_question, only: %i[show update choose_best_answer destroy]
+  after_action :publish_question, only: %i[create]
 
   def index
     @questions = Question.all
@@ -57,5 +58,20 @@ class QuestionsController < ApplicationController
 
   def find_question
     @question = Question.with_attached_files.find(params[:id])
+  end
+
+  def publish_question
+    unless @question.errors.any?
+
+      rendered_question = ApplicationController.render(
+        partial: 'questions/question_for_broadcast',
+        locals: { question: @question }
+      )
+
+      ActionCable.server.broadcast(
+        'questions',
+        { question: rendered_question, question_id: @question.id }
+      )
+    end
   end
 end

@@ -25,6 +25,7 @@ gem 'slim-rails'
 gem 'devise'
 gem 'aws-sdk-s3'
 gem 'cocoon'
+gem 'gon'
 
 #UI
 gem 'jquery-rails'
