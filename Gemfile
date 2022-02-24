@@ -26,7 +26,7 @@ gem 'devise'
 gem 'aws-sdk-s3'
 gem 'cocoon'
 gem 'gon'
-
+gem 'cancancan'
 #UI
 gem 'jquery-rails'
 gem 'bootstrap'

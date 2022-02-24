@@ -5,6 +5,8 @@ class QuestionsController < ApplicationController
   before_action :find_question, only: %i[show update choose_best_answer destroy]
   after_action :publish_question, only: %i[create]
 
+  authorize_resource
+
   def index
     @questions = Question.all
   end
@@ -52,8 +54,11 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:title, :body,
-                                     files: [], links_attributes: [:name, :url], reward_attributes: [:name, :image])
+    params.require(:question).permit(:title,
+                                     :body,
+                                     files: [],
+                                     links_attributes: [:name, :url],
+                                     reward_attributes: [:name, :image])
   end
 
   def find_question
