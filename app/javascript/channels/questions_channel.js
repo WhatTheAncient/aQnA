@@ -1,7 +1,7 @@
 import consumer from "./consumer"
 import { questionVotesHandler } from "../utilities/votes";
 
-$(document).on('turbolinks:load', ()=>{
+$(document).on('turbolinks:load', () => {
   consumer.subscriptions.create('QuestionsChannel', {
     connected() {
       this.perform('follow')
