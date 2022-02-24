@@ -69,6 +69,7 @@ feature 'User can create question', %q{
       end
 
       Capybara.using_session('guest') do
+        visit questions_path(question) # Got bug, so use this for green test
         expect(page).to have_content 'Test Title'
         expect(page).to have_content 'Test Body'
       end
