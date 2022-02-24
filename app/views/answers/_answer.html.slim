@@ -26,6 +26,6 @@
     - if answer.persisted?
       = render 'answers/inline_form', answer: answer
   br
-  - if current_user && can?(:choose_as_best, answer.question)
+  - if current_user && can?(:choose_best_answer, answer.question)
     = link_to 'Choose as the best', choose_best_answer_question_path(answer.question, answer_id: answer.id),
             class: 'btn btn-success', remote: true, method: :patch
