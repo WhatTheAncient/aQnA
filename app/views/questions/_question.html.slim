@@ -19,10 +19,13 @@
     .comments
       .ul.list-inline
         = render 'shared/comments', resource: @question
-      = link_to 'Add comment', '#', class: 'btn add-comment-link', data: { question_id: @question.id }
+      - if current_user && can?(:create, Comment)
+        = link_to 'Add comment', '#', class: 'btn add-comment-link', data: { question_id: @question.id }
       = render 'comments/form', commentable: @question
 
-    - if current_user&.author_of?(@question)
+    - if current_user && can?(:update, @question)
       = render 'questions/inline_form'
-      = link_to 'Delete question', question_path(@question), class: 'btn btn-danger', method: :delete
       = link_to 'Edit question', question_path(@question), class: 'btn btn-warning edit-question-link'
+    - if current_user && can?(:destroy, @question)
+      = link_to 'Delete question', question_path(@question), class: 'btn btn-danger', method: :delete
+

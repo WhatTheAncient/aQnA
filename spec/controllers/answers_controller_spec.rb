@@ -71,10 +71,10 @@ RSpec.describe AnswersController, type: :controller do
         end.to_not change(Answer, :count)
       end
 
-      it 'renders destroy template' do
+      it 'redirects to root path' do
         delete :destroy, params: { id: answer }, format: :js
 
-        expect(response).to render_template :destroy
+        expect(response).to redirect_to root_path
       end
     end
   end

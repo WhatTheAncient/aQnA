@@ -3,21 +3,17 @@ module Voted
 
   def vote
     @votable = params[:votable].constantize.find(params[:id])
+    authorize! :vote, @votable
+
     @vote = @votable.votes.new(user: current_user, state: params[:vote_state])
-    if (current_user.author_of?(@vote.votable) || current_user.voted_for?(@vote.votable))
-      render json: { errors: @vote.errors.full_messages }, status: :unprocessable_entity
-    else
-      render json: { vote: @vote, rating: @votable.rating }, status: :created if @vote.save
-    end
+    render json: { vote: @vote, rating: @votable.rating }, status: :created if @vote.save
   end
 
   def unvote
     @vote = Vote.find(params[:vote_id])
-    if current_user.author_of?(@vote)
-      @vote.destroy
-      render json: { votable_id: @vote.votable.id, rating: @vote.votable.rating, votable_name: @vote.votable.class.to_s }
-    else
-      head :forbidden
-    end
+    authorize! :unvote, @vote.votable
+
+    @vote.destroy
+    render json: { votable_id: @vote.votable.id, rating: @vote.votable.rating, votable_name: @vote.votable.class.to_s }
   end
 end

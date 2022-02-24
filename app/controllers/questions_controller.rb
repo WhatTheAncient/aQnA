@@ -34,21 +34,17 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.update(question_params) if current_user.author_of?(@question)
+    @question.update(question_params)
   end
 
   def choose_best_answer
     @answer = Answer.find(params[:answer_id])
-    @question.set_best_answer(@answer) if current_user.author_of?(@question)
+    @question.set_best_answer(@answer)
   end
 
   def destroy
-    if current_user.author_of?(@question)
-      @question.destroy
-      redirect_to questions_path, notice: 'Your question successfully deleted.'
-    else
-      render :show
-    end
+    @question.destroy
+    redirect_to questions_path, notice: 'Your question successfully deleted.'
   end
 
   private

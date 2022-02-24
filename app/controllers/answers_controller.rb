@@ -5,6 +5,8 @@ class AnswersController < ApplicationController
   before_action :find_answer, only: %i[update destroy]
   after_action :publish_answer, only: %i[create]
 
+  authorize_resource
+
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params.merge(author: current_user))
@@ -20,14 +22,12 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update(answer_params) if current_user.author_of?(@answer)
+    @answer.update(answer_params)
   end
 
   def destroy
-    if current_user.author_of?(@answer)
-      @answer.destroy
-      flash.now[:notice] = 'Your answer successfully deleted.'
-    end
+    @answer.destroy
+    flash.now[:notice] = 'Your answer successfully deleted.'
   end
 
   private

@@ -21,7 +21,7 @@ shared_examples 'voted' do
 
       it 'returns unprocessable entity' do
         post :vote, params: { id: resource, votable: votable_model.capitalize, vote_state: 'good' }, format: :json
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:found)
       end
     end
 
@@ -75,7 +75,7 @@ shared_examples 'voted' do
 
       it 'return forbidden status' do
         delete :unvote, params: { id: resource, vote_id: vote.id }, format: :json
-        expect(response).to have_http_status(:forbidden)
+        expect(response).to have_http_status(:found)
       end
     end
   end

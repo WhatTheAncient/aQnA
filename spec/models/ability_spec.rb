@@ -19,6 +19,34 @@ describe Ability do
   describe 'for user' do
     let(:user) { create :user }
     let(:other) { create :user }
+    let(:another_voter) { create(:user) }
+    let(:question) { create(:question,
+                            files: [ Rack::Test::UploadedFile.new("#{Rails.root}/app/models/question.rb"),
+                                     Rack::Test::UploadedFile.new("#{Rails.root}/app/models/answer.rb")],
+                            links: create_list(:link_for_question, 3),
+                            author: user) }
+    let(:other_question) { create(:question,
+                                  files: [ Rack::Test::UploadedFile.new("#{Rails.root}/app/models/question.rb"),
+                                           Rack::Test::UploadedFile.new("#{Rails.root}/app/models/answer.rb")],
+                                  links: create_list(:link_for_question, 3),
+                                  author: other) }
+
+    let(:answer) { create(:answer,
+                          files: [ Rack::Test::UploadedFile.new("#{Rails.root}/app/models/question.rb"),
+                                   Rack::Test::UploadedFile.new("#{Rails.root}/app/models/answer.rb")],
+                          links: create_list(:link_for_question, 3),
+                          author: user) }
+
+    let(:other_answer) { create(:answer,
+                                files: [ Rack::Test::UploadedFile.new("#{Rails.root}/app/models/question.rb"),
+                                         Rack::Test::UploadedFile.new("#{Rails.root}/app/models/answer.rb")],
+                                links: create_list(:link_for_question, 3),
+                                author: other) }
+
+    let(:vote_for_question) { create(:vote, votable: other_question, user: user) }
+    let(:other_vote_for_question) { create(:vote, votable: other_question, user: another_voter) }
+    let(:vote_for_answer) { create(:vote, votable: other_answer, user: user) }
+    let(:other_vote_for_answer) { create(:vote, votable: other_answer, user: another_voter) }
 
     it { should be_able_to :read, :all }
     it { should_not be_able_to :manage, :all }
@@ -28,33 +56,48 @@ describe Ability do
     it { should be_able_to :create, Answer }
 
     context 'voting' do
-      let(:question) { create(:question) }
       describe 'for question' do
-        it { should be_able_to :vote, create(:question, author: other) }
-        it { should_not be_able_to :vote, create(:question, author: user)}
+        it { should be_able_to :vote, other_question }
+        it { should_not be_able_to :vote, question}
       end
 
       describe 'for answer' do
-        it { should be_able_to :vote, create(:answer, author: other) }
-        it { should_not be_able_to :vote, create(:answer, author: user)}
-      end
-
-      describe 'unvoting' do
-        it { should be_able_to :destroy, create(:vote, votable: question, user: user) }
-        it { should_not be_able_to :unvote, create(:vote, votable: question, user: other) }
+        it { should be_able_to :vote, other_answer }
+        it { should_not be_able_to :vote, answer }
       end
     end
 
-    it { should be_able_to :update, create(:question, author: user) }
-    it { should_not be_able_to :update, create(:question, author: other) }
+    context 'unvoting' do
+      describe 'for question' do
+        it { should be_able_to :unvote, other_question, resource: vote_for_question }
+        it { should_not be_able_to :unvote, other_vote_for_question }
+      end
 
-    it { should be_able_to :update, create(:answer, author: user) }
-    it { should_not be_able_to :update, create(:answer, author: other) }
+      describe 'for answer' do
+        it { should be_able_to :unvote, other_answer, resource: vote_for_answer }
+        it { should_not be_able_to :unvote, other_vote_for_answer }
+      end
+    end
 
-    it { should be_able_to :destroy, create(:question, author: user) }
-    it { should_not be_able_to :destroy, create(:question, author: other) }
+    it { should be_able_to :choose_best_answer, question }
 
-    it { should be_able_to :destroy, create(:answer, author: user) }
-    it { should_not be_able_to :destroy, create(:answer, author: other) }
+    it { should be_able_to :update, question }
+    it { should_not be_able_to :update, other_question }
+
+    it { should be_able_to :destroy, question.files.first }
+    it { should_not be_able_to :destroy, other_question.files.first }
+
+    it { should be_able_to :destroy, question.links.first }
+    it { should_not be_able_to :destroy, other_question.links.first }
+
+    it { should be_able_to :update, answer }
+    it { should_not be_able_to :update, other_answer }
+
+    it { should be_able_to :destroy, answer.files.first }
+    it { should_not be_able_to :destroy, other_answer.files.first }
+
+    it { should be_able_to :destroy, answer.links.first }
+    it { should_not be_able_to :destroy, other_answer.links.first }
+
   end
 end

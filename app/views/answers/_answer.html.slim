@@ -18,13 +18,14 @@
     = link_to 'Add comment', '#', class: 'btn add-comment-link', data: { answer_id: answer.id }
     = render 'comments/form', commentable: answer
 
-  - if current_user&.author_of?(answer)
+  - if current_user && can?(:update, answer)
     = link_to 'Edit', '#', class: 'edit-answer-link btn', data: { answer_id:  answer.id }, remote: true, method: :patch
+  - if current_user && can?(:destroy, answer)
     = link_to 'Delete answer', answer_path(answer), class: 'btn', remote: true, method:  :delete unless answer.new_record?
 
     - if answer.persisted?
       = render 'answers/inline_form', answer: answer
   br
-  - if current_user&.author_of?(answer.question)
+  - if current_user && can?(:choose_as_best, answer.question)
     = link_to 'Choose as the best', choose_best_answer_question_path(answer.question, answer_id: answer.id),
             class: 'btn btn-success', remote: true, method: :patch
