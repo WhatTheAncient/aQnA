@@ -27,9 +27,9 @@ RSpec.describe LinksController, type: :controller do
           expect { delete :destroy, params: { id: question.links.first }, format: :js }.to_not change(question.links, :count)
         end
 
-        it 'redirects to root path' do
+        it 'responses with forbidden status' do
           delete :destroy, params: { id: question.links.first }, format: :js
-          expect(response).to redirect_to root_path
+          expect(response).to have_http_status(:forbidden)
         end
       end
     end
@@ -59,9 +59,9 @@ RSpec.describe LinksController, type: :controller do
           expect { delete :destroy, params: { id: answer.links.first }, format: :js }.to_not change(answer.links, :count)
         end
 
-        it 'redirects to root_path' do
+        it 'responses with forbidden status' do
           delete :destroy, params: { id: answer.links.first }, format: :js
-          expect(response).to redirect_to root_path
+          expect(response).to have_http_status(:forbidden)
         end
       end
     end

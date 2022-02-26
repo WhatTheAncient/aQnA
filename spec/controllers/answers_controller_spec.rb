@@ -71,10 +71,10 @@ RSpec.describe AnswersController, type: :controller do
         end.to_not change(Answer, :count)
       end
 
-      it 'redirects to root path' do
+      it 'responses with forbidden status' do
         delete :destroy, params: { id: answer }, format: :js
 
-        expect(response).to redirect_to root_path
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end
