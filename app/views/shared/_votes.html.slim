@@ -4,7 +4,7 @@ h5.vote-rating = "Rating: #{resource.rating}"
   - if current_user&.voted_for?(resource)
     = link_to 'Cancel vote', polymorphic_path(resource, action: 'unvote', vote_id: current_user.vote_for(resource).id),
             method: :delete, remote: true, class: 'btn btn-danger cancel-vote-link'
-  - elsif user_signed_in?
+  - elsif current_user && can?(:vote, resource)
     = link_to 'Good', polymorphic_path(resource, action: 'vote', vote_state: 'good', votable: resource.class.name),
             method: :post, remote: true, class: 'btn btn-outline-success vote-link'
     br
