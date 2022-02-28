@@ -27,6 +27,8 @@ gem 'aws-sdk-s3'
 gem 'cocoon'
 gem 'gon'
 gem 'cancancan'
+gem 'doorkeeper'
+
 #UI
 gem 'jquery-rails'
 gem 'bootstrap'
