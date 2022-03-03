@@ -8,6 +8,7 @@ describe Ability do
 
     it { should be_able_to :read, :all }
     it { should_not be_able_to :manage, :all }
+    it { should_not be_able_to :me, :profile }
   end
 
   describe 'for admin' do
@@ -99,5 +100,8 @@ describe Ability do
     it { should be_able_to :destroy, answer.links.first }
     it { should_not be_able_to :destroy, other_answer.links.first }
 
+    let!(:access_token) { create(:access_token, resource_owner_id: user.id) }
+
+    it { should be_able_to  :me, :profile}
   end
 end
