@@ -37,5 +37,6 @@ class Ability
     can :destroy, Link, linkable: { user_id: user.id }
     can :destroy, ActiveStorage::Attachment, record: { user_id: user.id }
     can :me, :profile
+    can :other, :profile
   end
 end

@@ -7,7 +7,7 @@ describe 'Querstions API', type: :request do
   describe 'GET /questions' do
     let(:api_path) { '/api/v1/questions' }
 
-    it_behaves_like "API Unauthorizable" do
+    it_behaves_like "API Unauthorized" do
       let(:method) { :get }
     end
 
@@ -20,16 +20,16 @@ describe 'Querstions API', type: :request do
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
-      it_behaves_like 'API Authorizable'
+      it_behaves_like 'API Authorized'
 
       it 'returns list of questions' do
         expect(json['questions'].size).to eq 4
       end
 
-      it 'returns all public fields' do
-        %w[id title body created_at updated_at].each do |attr|
-          expect(question_response[attr]).to eq question.send(attr).as_json
-        end
+      it_behaves_like 'public fields returned' do
+        let(:public_fields) { %w[id title body created_at updated_at] }
+        let(:resource) { question }
+        let(:resource_response) { question_response }
       end
 
       it 'contains author object' do
