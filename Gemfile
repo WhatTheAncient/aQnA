@@ -28,6 +28,8 @@ gem 'cocoon'
 gem 'gon'
 gem 'cancancan'
 gem 'doorkeeper'
+gem 'active_model_serializers'
+gem 'oj'
 
 #UI
 gem 'jquery-rails'
