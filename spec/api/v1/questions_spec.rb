@@ -37,4 +37,35 @@ describe 'Querstions API', type: :request do
       end
     end
   end
+
+  describe 'GET /questions/:id' do
+    let(:question) { create(:question, :with_files, :with_links, :with_comments) }
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
+
+    it_behaves_like "API Unauthorized" do
+      let(:method) { :get }
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token) }
+      let(:resource) { question }
+      let(:resource_response) { json['question'] }
+
+      before { get api_path, params: { access_token: access_token.token }, headers: headers }
+
+      it_behaves_like 'API Authorized'
+
+      it_behaves_like 'public fields returned' do
+        let(:public_fields) { %w[id title body created_at updated_at] }
+      end
+
+      it_behaves_like 'API list returnable' do
+        let(:resource_associations) { %w[links files comments] }
+      end
+
+      it 'contains author object' do
+        expect(resource_response['author']['id']).to eq question.author.id
+      end
+    end
+  end
 end

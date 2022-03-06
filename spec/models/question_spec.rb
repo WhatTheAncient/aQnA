@@ -17,7 +17,7 @@ RSpec.describe Question, type: :model do
   it { should accept_nested_attributes_for :reward }
 
   describe '.set_best_answer' do
-    let!(:question) { create(:question_with_answers, best_answer: create(:answer)) }
+    let!(:question) { create(:question, :with_answers, best_answer: create(:answer)) }
 
     describe 'answer in question.answers' do
       let(:answer) { question.answers.first }

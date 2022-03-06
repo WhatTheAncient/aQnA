@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe LinksController, type: :controller do
-  let!(:question) { create(:question_with_links) }
+  let!(:question) { create(:question, :with_links) }
 
   describe 'DELETE #destroy' do
     context 'question' do
@@ -35,7 +35,7 @@ RSpec.describe LinksController, type: :controller do
     end
 
     context 'answer' do
-      let!(:answer) { create :answer_with_links }
+      let!(:answer) { create :answer, :with_links }
 
       context 'as author' do
         let!(:author) { answer.author }

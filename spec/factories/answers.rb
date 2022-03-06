@@ -6,21 +6,21 @@ FactoryBot.define do
     files { [] }
     votes { [] }
 
-    factory :answer_with_links do
+    trait :invalid do
+      body { nil }
+    end
+
+    trait :with_links do
       links { FactoryBot.create_list(:link_for_answer, 3) }
     end
 
-    factory :answer_with_files do
+    trait :with_files do
       files { [ Rack::Test::UploadedFile.new("#{Rails.root}/app/models/question.rb"),
                 Rack::Test::UploadedFile.new("#{Rails.root}/app/models/answer.rb")] }
     end
 
-    factory :answer_with_votes do
-      votes { FactoryBot.create_list(:vote_for_answer, 3) }
-    end
-
-    trait :invalid do
-      body { nil }
+    trait :with_comments  do
+      comments { FactoryBot.create_list(:comment_for_answer, 3) }
     end
   end
 end

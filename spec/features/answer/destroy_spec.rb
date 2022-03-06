@@ -5,7 +5,7 @@ feature 'User can delete answer', %q{
   I'd like to be able to delete my answer
 }, js: true do
 
-  given (:question) { create(:question_with_answers) }
+  given (:question) { create(:question, :with_answers) }
 
   describe 'Authenticated user' do
     scenario 'who author of answer' do

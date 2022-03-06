@@ -154,7 +154,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #choose_best_answer' do
-    let!(:question) { create(:question_with_answers) }
+    let!(:question) { create(:question, :with_answers) }
     let!(:answer) { question.answers[4] }
 
     describe 'As author of question' do

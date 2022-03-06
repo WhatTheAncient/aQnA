@@ -8,7 +8,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
     before { login(user) }
 
-    let(:question) { create(:question_with_answers) }
+    let(:question) { create(:question, :with_answers) }
 
     context 'with valid attributes' do
       it 'saves created answer to db' do

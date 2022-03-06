@@ -6,7 +6,7 @@ feature 'User can comment the answer', %q{
   I'd like to be able to comment the answer on question's page
 }, js: true do
 
-  given(:question) { create(:question_with_answers) }
+  given(:question) { create(:question, :with_answers) }
   given(:answer) { question.answers[1] }
 
   describe 'Authenticated user comment the answer' do

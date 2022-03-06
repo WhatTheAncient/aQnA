@@ -7,12 +7,13 @@ feature 'User can see question and list of answers', %q{
 } do
 
   scenario 'User go to page with all questions' do
-    question = create(:question_with_answers)
+    question = create(:question, :with_answers)
 
     visit question_path(question)
 
     expect(page).to have_content(question.title)
     expect(page).to have_content(question.body)
+
     question.answers.each do |answer|
       expect(page).to have_content answer.body
     end

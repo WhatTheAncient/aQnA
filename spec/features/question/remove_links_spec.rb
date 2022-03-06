@@ -6,7 +6,7 @@ feature 'User can remove links from question', %q{
   I'd like to be able to remove links
 }, js: true do
 
-  given(:question) { create(:question_with_links) }
+  given(:question) { create(:question, :with_links) }
 
   describe 'Authenticated user' do
     describe 'who author of question' do

@@ -7,7 +7,7 @@ feature 'User can remove links from answer', %q{
 }, js: true do
 
   given!(:question) { create(:question) }
-  given!(:answer) { create(:answer_with_links, question: question) }
+  given!(:answer) { create(:answer, :with_links, question: question) }
 
   describe 'Authenticated user' do
     describe 'who author of question' do

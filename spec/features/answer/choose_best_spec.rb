@@ -5,7 +5,7 @@ feature "User can choose best answer", %q{
   As author of question
   I'd like to be able to choose best answer
 }, js: true do
-  given!(:question) { create(:question_with_answers) }
+  given!(:question) { create(:question, :with_answers) }
 
   describe 'As authenticated user' do
     describe 'Author of question tries to choose the best answer' do

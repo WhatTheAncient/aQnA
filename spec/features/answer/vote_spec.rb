@@ -5,7 +5,7 @@ feature 'User can vote for Answer', %q{
   As authenticated user,
   I'd like to be able to vote for another answer
 }, js: true do
-  let!(:question) { create(:question_with_answers) }
+  let!(:question) { create(:question, :with_answers) }
   let(:answer) { question.answers[1] }
 
   describe 'Authenticated user' do

@@ -6,7 +6,7 @@ feature 'User can add links to answer', %q{
   I'd like to be able to add links
 } do
 
-  given(:question) { create (:question_with_answers) }
+  given(:question) { create :question, :with_answers }
 
   describe  'User adds links when answers the question', js: true do
     given(:user) { create(:user) }

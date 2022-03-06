@@ -22,28 +22,12 @@ describe Ability do
     let(:user) { create :user }
     let(:other) { create :user }
     let(:another_voter) { create(:user) }
-    let(:question) { create(:question,
-                            files: [ Rack::Test::UploadedFile.new("#{Rails.root}/app/models/question.rb"),
-                                     Rack::Test::UploadedFile.new("#{Rails.root}/app/models/answer.rb")],
-                            links: create_list(:link_for_question, 3),
-                            author: user) }
-    let(:other_question) { create(:question,
-                                  files: [ Rack::Test::UploadedFile.new("#{Rails.root}/app/models/question.rb"),
-                                           Rack::Test::UploadedFile.new("#{Rails.root}/app/models/answer.rb")],
-                                  links: create_list(:link_for_question, 3),
-                                  author: other) }
+    let(:question) { create(:question, :with_files, :with_links, author: user) }
+    let(:other_question) { create(:question, :with_files, :with_links, author: other) }
 
-    let(:answer) { create(:answer,
-                          files: [ Rack::Test::UploadedFile.new("#{Rails.root}/app/models/question.rb"),
-                                   Rack::Test::UploadedFile.new("#{Rails.root}/app/models/answer.rb")],
-                          links: create_list(:link_for_question, 3),
-                          author: user) }
+    let(:answer) { create(:answer, :with_files, :with_links, author: user) }
 
-    let(:other_answer) { create(:answer,
-                                files: [ Rack::Test::UploadedFile.new("#{Rails.root}/app/models/question.rb"),
-                                         Rack::Test::UploadedFile.new("#{Rails.root}/app/models/answer.rb")],
-                                links: create_list(:link_for_question, 3),
-                                author: other) }
+    let(:other_answer) { create(:answer, :with_files, :with_links, author: other) }
 
     let(:vote_for_question) { create(:vote, votable: other_question, user: user) }
     let(:other_vote_for_question) { create(:vote, votable: other_question, user: another_voter) }
