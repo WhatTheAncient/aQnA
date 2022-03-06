@@ -29,5 +29,9 @@ FactoryBot.define do
     trait :with_comments  do
       comments { FactoryBot.create_list(:comment_for_question, 3) }
     end
+
+    trait :with_votes do
+      votes { FactoryBot.create_list(:vote_for_question, 3) }
+    end
   end
 end

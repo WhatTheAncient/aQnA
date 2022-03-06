@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  it_behaves_like 'voted'
+  it_behaves_like 'voted' do
+    let(:resource) { create(:question, :with_votes) }
+  end
 
   let (:question) { create(:question) }
   let (:user) { create(:user) }

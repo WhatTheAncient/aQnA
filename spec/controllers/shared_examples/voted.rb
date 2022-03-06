@@ -1,10 +1,7 @@
 require 'rails_helper'
 
 shared_examples 'voted' do
-  votable_model = described_class.controller_name.singularize
-  resource_sym = "#{votable_model}_with_votes".to_sym
 
-  let!(:resource) { create(resource_sym) }
   let!(:vote) { resource.votes[1] }
 
   describe 'POST #vote' do
@@ -14,13 +11,13 @@ shared_examples 'voted' do
 
       it 'do not creates vote' do
         expect { post :vote, params: { id: resource,
-                                         votable: votable_model.capitalize,
+                                         votable: resource.class.to_s,
                                          vote_state: 'good' },
                                          format: :json }.to_not change(resource.votes, :count)
       end
 
       it 'returns forbidden status' do
-        post :vote, params: { id: resource, votable: votable_model.capitalize, vote_state: 'good' }, format: :json
+        post :vote, params: { id: resource, votable: resource.class.to_s, vote_state: 'good' }, format: :json
         expect(response).to have_http_status(:forbidden)
       end
     end
@@ -31,13 +28,13 @@ shared_examples 'voted' do
 
       it 'creates vote' do
         expect { post :vote, params: { id: resource,
-                                       votable: votable_model.capitalize,
+                                       votable: resource.class.to_s,
                                        vote_state: 'good' },
                                        format: :json }.to change(resource.votes, :count).by(1)
       end
 
       it 'returns vote in json with created status' do
-        post :vote, params: { id: resource, votable: votable_model.capitalize, vote_state: 'good' }, format: :json
+        post :vote, params: { id: resource, votable: resource.class.to_s, vote_state: 'good' }, format: :json
         expect(response).to have_http_status(:created)
         response_body = JSON.parse(response.body)
 
