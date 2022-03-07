@@ -1,8 +1,7 @@
 require 'rails_helper'
 
-describe 'Querstions API', type: :request do
-  let(:headers) { { 'CONTENT_TYPE': 'application/json',
-                    'ACCEPT': 'application/json' } }
+describe 'Questions API', type: :request do
+  let(:headers) { { 'ACCEPT': 'application/json' } }
 
   describe 'GET /questions' do
     let(:api_path) { '/api/v1/questions' }
@@ -65,6 +64,60 @@ describe 'Querstions API', type: :request do
 
       it 'contains author object' do
         expect(resource_response['author']['id']).to eq question.author.id
+      end
+    end
+  end
+
+  describe 'POST /questions' do
+    let(:api_path) { "/api/v1/questions" }
+
+    it_behaves_like "API Unauthorized" do
+      let(:method) { :post }
+    end
+
+    context 'authorized' do
+      let(:user) { create(:user) }
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+
+      context 'with valid attributes' do
+
+        let(:question) { attributes_for(:question, author: user) }
+
+        it 'creates new question in database' do
+          expect { post api_path, params: { access_token: access_token.token, question: question }, headers: headers }
+            .to change(Question, :count).by(1)
+        end
+
+        before { post api_path, params: { access_token: access_token.token, question: question }, headers: headers }
+
+        let(:question_response) { json['question'] }
+
+        it_behaves_like 'API Authorized'
+
+        it 'creates question with correct attributes' do
+          expect(Question.last).to have_attributes question
+        end
+
+        it 'contains author object' do
+          expect(question_response['author']['id']).to eq access_token.resource_owner_id
+        end
+      end
+
+      context 'with invalid attributes' do
+        it 'does not save the question to db' do
+          expect { post api_path, params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }, headers: headers }
+            .to_not change(Question, :count)
+        end
+
+        before { post api_path, params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }, headers: headers }
+
+        it 'returns :unprocessable_entity' do
+          expect(response).to have_http_status :unprocessable_entity
+        end
+
+        it 'returns errros' do
+          expect(json['errors']).to_not be_nil
+        end
       end
     end
   end

@@ -6,8 +6,6 @@ FactoryBot.define do
     title { "MyString" }
     body { "MyText" }
     author { create(:user) }
-    files { [] }
-    votes { [] }
 
     trait :invalid do
       title { nil }

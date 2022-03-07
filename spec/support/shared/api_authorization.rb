@@ -12,6 +12,6 @@ end
 
 shared_examples_for 'API Authorized' do
     it 'returns 200 status' do
-      expect(response).to be_successful
+      expect(response.status).to eq 200
     end
 end
