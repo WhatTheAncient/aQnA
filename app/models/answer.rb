@@ -11,6 +11,10 @@ class Answer < ApplicationRecord
 
   before_destroy :clear_best_answer
 
+  def best?
+    question.best_answer_id == id
+  end
+
   private
 
   def clear_best_answer

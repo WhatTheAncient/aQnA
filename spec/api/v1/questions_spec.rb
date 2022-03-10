@@ -15,7 +15,6 @@ describe 'Questions API', type: :request do
       let!(:questions) { create_list(:question, 4) }
       let(:question) { questions.first }
       let(:question_response) { json['questions'].first }
-      let!(:answers) { create_list(:answer, 3, question: question) }
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
@@ -158,10 +157,10 @@ describe 'Questions API', type: :request do
     context 'authorized' do
       let(:user) { create(:user) }
       let(:question) { create(:question, author: user) }
+      let(:api_path) { "/api/v1/questions/#{question.id}" }
 
       context 'as author' do
         let(:access_token) { create(:access_token, resource_owner_id: user.id) }
-        let(:api_path) { "/api/v1/questions/#{question.id}" }
 
         context 'with valid attributes' do
           before do
@@ -213,7 +212,6 @@ describe 'Questions API', type: :request do
       context 'as other user' do
         let(:other_user) { create(:user) }
         let(:access_token) { create(:access_token, resource_owner_id: other_user.id) }
-        let(:api_path) { "/api/v1/questions/#{question.id}" }
 
         it 'does not change the question' do
           patch api_path,
@@ -238,8 +236,8 @@ describe 'Questions API', type: :request do
 
     context 'authorized' do
       let(:user) { create(:user) }
-      let(:api_path) { "/api/v1/questions/#{question.id}" }
       let!(:question) { create(:question, author: user) }
+      let!(:api_path) { "/api/v1/questions/#{question.id}" }
 
       context 'as author' do
         let(:access_token) { create(:access_token, resource_owner_id: user.id) }
