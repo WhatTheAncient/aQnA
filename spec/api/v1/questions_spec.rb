@@ -121,4 +121,86 @@ describe 'Questions API', type: :request do
       end
     end
   end
+
+  describe 'PATCH /questions/:id' do
+    it_behaves_like "API Unauthorized" do
+      let(:question) { create(:question) }
+      let(:api_path) { "/api/v1/questions/#{question.id}" }
+      let(:method) { :patch }
+    end
+
+    context 'authorized' do
+      let(:user) { create(:user) }
+
+      context 'as author' do
+        let(:question) { create(:question, author: user) }
+        let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+        let(:api_path) { "/api/v1/questions/#{question.id}" }
+
+        context 'with valid attributes' do
+          before do
+            patch api_path,
+                  params: { access_token: access_token.token, question: { title: 'new title', body: 'new body' } },
+                  headers: headers
+          end
+
+          let(:question_response) { json['question'] }
+
+          it_behaves_like 'API Authorized'
+
+          it 'updates question attributes in database' do
+            question.reload
+
+            expect(question.title).to eq 'new title'
+            expect(question.body).to eq 'new body'
+          end
+
+          it 'contains author object' do
+            expect(question_response['author']['id']).to eq access_token.resource_owner_id
+          end
+        end
+
+        context 'with invalid attributes' do
+          before do
+            patch api_path,
+                  params: { access_token: access_token.token, question: attributes_for(:question, :invalid) },
+                  headers: headers
+          end
+
+          it 'does not change the question' do
+            question.reload
+
+            expect(question.title).to eq 'MyString'
+            expect(question.body).to eq 'MyText'
+          end
+
+          it 'returns :unprocessable_entity' do
+            expect(response).to have_http_status :unprocessable_entity
+          end
+
+          it 'returns errros' do
+            expect(json['errors']).to_not be_nil
+          end
+        end
+      end
+
+    context 'as other user' do
+      let(:other_user) { create(:user) }
+      let(:question) { create(:question, author: user) }
+      let(:access_token) { create(:access_token, resource_owner_id: other_user.id) }
+      let(:api_path) { "/api/v1/questions/#{question.id}" }
+
+      it 'does not change the question' do
+        patch api_path,
+              params: { access_token: access_token.token, question: { title: 'new title', body: 'new body' } },
+              headers: headers
+
+        question.reload
+
+        expect(question.title).to eq 'MyString'
+        expect(question.body).to eq 'MyText'
+      end
+    end
+    end
+  end
 end
