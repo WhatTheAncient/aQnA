@@ -1,7 +1,7 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
-  authorize_resource
-
   before_action :find_question, only: %i[show update destroy]
+
+  authorize_resource
 
   def index
     @questions = Question.all
@@ -23,7 +23,6 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def update
-    authorize! :update, @question
     if @question.update(question_params)
       render json: @question
     else
@@ -32,7 +31,8 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def destroy
-
+    @question.destroy
+    render json: @question
   end
 
   private

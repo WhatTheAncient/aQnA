@@ -47,8 +47,7 @@ describe 'Profiles API', type: :request do
       it_behaves_like 'API Authorized'
 
       it 'return all items except request author' do
-        response_ids = []
-        json['users'].each {|user| response_ids << user['id']}
+        response_ids = User.where.not(id: me.id).ids
 
         expect(json['users'].size).to eq users.size - 1
         expect(response_ids).to_not include(me.id)
