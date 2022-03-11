@@ -7,65 +7,20 @@ RSpec.describe FilesController, type: :controller do
     context 'question' do
       let!(:question) { create :question, files: [file] }
 
-      context 'as author' do
+      it_behaves_like 'AJAX DELETEable' do
         let!(:author) { question.author }
-        before { login(author) }
-
-        it 'deletes file' do
-          expect { delete :destroy, params: { id: question.files.first }, format: :js }.to change(question.files, :count).by(-1)
-        end
-
-        it 'renders destroy template' do
-          delete :destroy, params: { id: question.files.first }, format: :js
-          expect(response).to render_template :destroy
-        end
-      end
-
-      context 'as not author' do
-        let!(:user) { create(:user) }
-        before { login(user) }
-
-        it 'do not deletes file' do
-          expect { delete :destroy, params: { id: question.files.first }, format: :js }.to_not change(question.files, :count)
-        end
-
-        it 'responses with forbidden status' do
-          delete :destroy, params: { id: question.files.first }, format: :js
-          expect(response).to have_http_status(:forbidden)
-        end
+        let!(:resource) { question.files.first }
+        let!(:resource_collection) { question.files }
       end
     end
 
     context 'answer' do
       let!(:answer) { create :answer, files: [file] }
-      let!(:author) { answer.author }
 
-      context 'as author' do
+      it_behaves_like 'AJAX DELETEable' do
         let!(:author) { answer.author }
-        before { login(author) }
-
-        it 'deletes file' do
-          expect { delete :destroy, params: { id: answer.files.first }, format: :js }.to change(answer.files, :count).by(-1)
-        end
-
-        it 'renders destroy template' do
-          delete :destroy, params: { id: answer.files.first }, format: :js
-          expect(response).to render_template :destroy
-        end
-      end
-
-      context 'as not author' do
-        let(:user) { create(:user) }
-        before { login(user) }
-
-        it 'do not deletes file' do
-          expect { delete :destroy, params: { id: answer.files.first }, format: :js }.to_not change(answer.files, :count)
-        end
-
-        it 'responses with forbidden status' do
-          delete :destroy, params: { id: answer.files.first }, format: :js
-          expect(response).to have_http_status(:forbidden)
-        end
+        let!(:resource) { answer.files.first }
+        let!(:resource_collection) { answer.files }
       end
     end
   end

@@ -8,18 +8,15 @@ describe 'Profiles API', type: :request do
   let(:private_fields) { %w[password encrypted_password] }
   describe 'GET /profiles/me' do
     let(:api_path) { '/api/v1/profiles/me' }
+    let(:method) { :get }
 
-    it_behaves_like "API Unauthorized" do
-      let(:method) { :get }
-    end
+    it_behaves_like 'API Authorizable'
 
     context 'authorized' do
       let(:me) { create(:user) }
       let(:access_token) { create :access_token, resource_owner_id: me.id }
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
-
-      it_behaves_like 'API Authorized'
 
       it_behaves_like 'public fields returned' do
         let(:resource) { me }
@@ -32,10 +29,8 @@ describe 'Profiles API', type: :request do
 
   describe 'GET /profiles/other' do
     let(:api_path) { '/api/v1/profiles/other' }
-
-    it_behaves_like "API Unauthorized" do
-      let(:method) { :get }
-    end
+    let(:method) { :get }
+    it_behaves_like 'API Authorizable'
 
     context 'authorized' do
       let(:users) { create_list(:user, 5) }
@@ -43,8 +38,6 @@ describe 'Profiles API', type: :request do
       let(:access_token) { create :access_token, resource_owner_id: me.id }
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
-
-      it_behaves_like 'API Authorized'
 
       it 'return all items except request author' do
         response_ids = User.where.not(id: me.id).ids

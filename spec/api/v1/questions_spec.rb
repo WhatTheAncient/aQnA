@@ -5,10 +5,9 @@ describe 'Questions API', type: :request do
 
   describe 'GET /questions' do
     let(:api_path) { '/api/v1/questions' }
+    let(:method) { :get }
 
-    it_behaves_like "API Unauthorized" do
-      let(:method) { :get }
-    end
+    it_behaves_like 'API Authorizable'
 
     context 'authorized' do
       let(:access_token) { create(:access_token) }
@@ -17,8 +16,6 @@ describe 'Questions API', type: :request do
       let(:question_response) { json['questions'].first }
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
-
-      it_behaves_like 'API Authorized'
 
       it 'returns list of questions' do
         expect(json['questions'].size).to eq 4
@@ -39,17 +36,14 @@ describe 'Questions API', type: :request do
   describe 'GET /questions/:id' do
     let(:question) { create(:question, :with_files, :with_links, :with_comments) }
     let(:api_path) { "/api/v1/questions/#{question.id}" }
+    let(:method) { :get }
 
-    it_behaves_like "API Unauthorized" do
-      let(:method) { :get }
-    end
+    it_behaves_like 'API Authorizable'
 
     context 'authorized' do
       let(:access_token) { create(:access_token) }
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
-
-      it_behaves_like 'API Authorized'
 
       it_behaves_like 'public fields returned' do
         let(:public_fields) { %w[id title body created_at updated_at] }
@@ -95,71 +89,33 @@ describe 'Questions API', type: :request do
 
   describe 'POST /questions' do
     let(:api_path) { "/api/v1/questions" }
+    let(:method) { :post }
 
-    it_behaves_like "API Unauthorized" do
-      let(:method) { :post }
-    end
+    it_behaves_like 'API Authorizable'
 
     context 'authorized' do
       let(:user) { create(:user) }
       let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
-      context 'with valid attributes' do
-
-        let(:question) { attributes_for(:question, author: user) }
-
-        it 'creates new question in database' do
-          expect { post api_path, params: { access_token: access_token.token, question: question }, headers: headers }
-            .to change(Question, :count).by(1)
-        end
-
-        before { post api_path, params: { access_token: access_token.token, question: question }, headers: headers }
-
-        let(:question_response) { json['question'] }
-
-        it_behaves_like 'API Authorized'
-
-        it 'creates question with correct attributes' do
-          expect(Question.last).to have_attributes question
-        end
-
-        it 'contains author object' do
-          expect(question_response['author']['id']).to eq access_token.resource_owner_id
-        end
-      end
-
-      context 'with invalid attributes' do
-        it 'does not save the question to db' do
-          expect { post api_path, params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }, headers: headers }
-            .to_not change(Question, :count)
-        end
-
-        before { post api_path, params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }, headers: headers }
-
-        it 'returns :unprocessable_entity' do
-          expect(response).to have_http_status :unprocessable_entity
-        end
-
-        it 'returns errros' do
-          expect(json['errors']).to_not be_nil
-        end
+      it_behaves_like 'API POSTable' do
+        let(:resource_class) { Question }
+        let(:resource) { attributes_for(:question, author: user) }
+        let(:valid_params) { { access_token: access_token.token, question: resource } }
+        let(:invalid_params) { { access_token: access_token.token, question: attributes_for(:question, :invalid) } }
       end
     end
   end
 
   describe 'PATCH /questions/:id' do
-    it_behaves_like "API Unauthorized" do
-      let(:question) { create(:question) }
-      let(:api_path) { "/api/v1/questions/#{question.id}" }
-      let(:method) { :patch }
-    end
+    let(:question) { create(:question) }
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
+    let(:method) { :patch }
+
+    it_behaves_like 'API Authorizable'
 
     context 'authorized' do
-      let(:user) { create(:user) }
-      let(:question) { create(:question, author: user) }
-      let(:api_path) { "/api/v1/questions/#{question.id}" }
-
       context 'as author' do
+        let(:user) { question.author }
         let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
         context 'with valid attributes' do
@@ -170,8 +126,6 @@ describe 'Questions API', type: :request do
           end
 
           let(:question_response) { json['question'] }
-
-          it_behaves_like 'API Authorized'
 
           it 'updates question attributes in database' do
             question.reload
@@ -228,67 +182,19 @@ describe 'Questions API', type: :request do
   end
 
   describe 'DELETE /questions/:id' do
-    it_behaves_like "API Unauthorized" do
-      let(:question) { create(:question) }
-      let(:api_path) { "/api/v1/questions/#{question.id}" }
-      let(:method) { :delete }
-    end
+    let!(:resource) { create(:question) }
+    let!(:api_path) { "/api/v1/questions/#{resource.id}" }
+    let!(:resource_class) { Question }
+    let(:method) { :delete }
+
+    it_behaves_like 'API Authorizable'
 
     context 'authorized' do
-      let(:user) { create(:user) }
-      let!(:question) { create(:question, author: user) }
-      let!(:api_path) { "/api/v1/questions/#{question.id}" }
+      let!(:user) { resource.author }
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
-      context 'as author' do
-        let(:access_token) { create(:access_token, resource_owner_id: user.id) }
-
-        # Strange bug, return later
-        # it 'deletes question in database' do
-        #   puts api_path
-        #   question.save!
-        #   expect(question.persisted?).to eq true
-        #   puts "Questions: #{Question.all.ids}"
-        #   expect(question.id).to eq 3
-        #   puts Question.all.ids
-        #   expect do
-        #     delete api_path,
-        #            params: { access_token: access_token.token },
-        #            headers: headers
-        #   end.to change(Question, :count).by(-1)
-        # end
-
-        before do
-          delete api_path,
-                params: { access_token: access_token.token },
-                headers: headers
-        end
-
-        let(:question_response) { json['question'] }
-
-        it_behaves_like 'API Authorized'
-
-        it_behaves_like 'public fields returned' do
-          let(:public_fields) { %w[id title body created_at updated_at] }
-          let(:resource) { question }
-          let(:resource_response) { question_response }
-        end
-
-        it 'contains author object' do
-          expect(question_response['author']['id']).to eq access_token.resource_owner_id
-        end
-      end
-
-      context 'as other user' do
-        let(:other_user) { create(:user) }
-        let(:access_token) { create(:access_token, resource_owner_id: other_user.id) }
-
-        it 'does not deletes the question' do
-          expect do
-            delete api_path,
-                  params: { access_token: access_token.token },
-                  headers: headers
-          end.to_not change(Question, :count)
-        end
+      it_behaves_like 'API DELETEable' do
+        let(:public_fields) { %w[id title body created_at updated_at] }
       end
     end
   end

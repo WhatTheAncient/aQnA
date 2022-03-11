@@ -4,33 +4,32 @@ RSpec.describe CommentsController, type: :controller do
   describe 'POST #create' do
     let!(:user) { create(:user) }
     before { login(user) }
-    let!(:question) { create(:question) }
-    describe 'with valid attributes' do
-      it 'should increase comments count in db' do
-        expect { post :create,
-                      params: { comment: { body: 'Test Body' }, commentable_type: question.class.to_s, commentable_id: question.id },
-                      format: :js }.to change(Comment, :count).by(1)
-      end
 
-      it 'should render :create template' do
-        post :create,
-             params: { comment: { body: 'Test Body' }, commentable_type: question.class.to_s, commentable_id: question.id },
-             format: :js
+    context 'question' do
+      let!(:question) { create(:question) }
 
-        expect(response).to render_template :create
+      it_behaves_like 'AJAX POSTable' do
+        let!(:valid_params) { { comment: { body: 'Test Body' },
+                                commentable_type: question.class.to_s,
+                                commentable_id: question.id } }
+        let!(:invalid_params) { { comment: { body: nil },
+                                  commentable_type: question.class.to_s,
+                                  commentable_id: question.id } }
+        let!(:resource_collection) { question.comments }
       end
     end
 
-    describe 'with invalid attributes' do
-      it 'should not increase comments count in db' do
-        expect { post :create,
-                      params: { comment: { body: ''}, commentable: Question.last },
-                      format: :js }.to_not change(Comment, :count)
-      end
+    context 'answer' do
+      let!(:answer) { create(:answer) }
 
-      it 'should render :create template' do
-        post :create, params: { comment: { body: ''}, commentable: Question.last }, format: :js
-        expect(response).to render_template :create
+      it_behaves_like 'AJAX POSTable' do
+        let!(:valid_params) { { comment: { body: 'Test Body' },
+                                commentable_type: answer.class.to_s,
+                                commentable_id: answer.id } }
+        let!(:invalid_params) { { comment: { body: nil },
+                                  commentable_type: answer.class.to_s,
+                                  commentable_id: answer.id } }
+        let!(:resource_collection) { answer.comments }
       end
     end
   end
