@@ -39,4 +39,14 @@ RSpec.describe Question, type: :model do
       expect(question.best_answer.id).to_not eq answer.id
     end
   end
+
+  describe 'reputation' do
+    let(:question) { build(:question) }
+
+    it 'calls Services::ReputationJob' do
+      expect(ReputationJob).to receive(:perform_later).with(question)
+
+      question.save!
+    end
+  end
 end

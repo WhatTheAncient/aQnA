@@ -30,6 +30,7 @@ gem 'cancancan'
 gem 'doorkeeper'
 gem 'active_model_serializers'
 gem 'oj'
+gem 'sidekiq'
 
 #UI
 gem 'jquery-rails'
