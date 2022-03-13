@@ -1,5 +1,5 @@
 class Reputation
   def self.calculate(object)
-    sleep(3)
+    # Calculate user's rating
   end
 end

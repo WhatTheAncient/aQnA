@@ -31,6 +31,8 @@ gem 'doorkeeper'
 gem 'active_model_serializers'
 gem 'oj'
 gem 'sidekiq'
+gem 'sinatra', require: false
+gem 'whenever', require: false
 
 #UI
 gem 'jquery-rails'

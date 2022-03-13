@@ -1,0 +1,15 @@
+doctype html
+html
+  head
+    meta content='text/html' charset='UTF-8' http-equiv='Content-Type'
+
+  body
+    h1 Hello, #{@user.name}, this is daily digest from aQnA.com
+
+    h2 New questions for the last day:
+
+    ul
+      - @questions.each do |question|
+        li
+          h3 = question.title
+          h5 = question.body
