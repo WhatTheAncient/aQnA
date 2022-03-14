@@ -2,6 +2,6 @@ class DailyDigestJob < ApplicationJob
   queue_as :default
 
   def perform()
-    DailyDigest.new.send_digest
+    DailyDigestService.new.send_digest
   end
 end

@@ -15,7 +15,13 @@ class Answer < ApplicationRecord
     question.best_answer_id == id
   end
 
+  after_create :notify
+
   private
+
+  def notify
+    NotificationJob.perform_later(self)
+  end
 
   def clear_best_answer
     question.update(best_answer_id: nil) if question.best_answer_id == id

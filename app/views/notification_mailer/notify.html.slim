@@ -1,0 +1,11 @@
+doctype html
+html
+  head
+    meta content='text/html' charset='UTF-8' http-equiv='Content-Type'
+
+  body
+    h1 Hello, #{@user.name}, this is notification about your subscription on question: #{@answer.question.title}
+
+    h2 Someone send new answer for this question:
+
+    p = @answer.body
