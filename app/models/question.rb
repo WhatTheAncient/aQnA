@@ -7,11 +7,16 @@ class Question < ApplicationRecord
   belongs_to :author, class_name: 'User', foreign_key: 'user_id', inverse_of: :questions
   belongs_to :best_answer, class_name: 'Answer', foreign_key: 'best_answer_id', optional: true
   has_many :answers, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
   has_one :reward, dependent: :destroy
 
   accepts_nested_attributes_for :reward, reject_if: :all_blank
 
   validates :title, :body, presence: true
+
+
+  after_create :calculate_reputation
+  after_create :subscribe_author
 
   def set_best_answer(answer)
     if answer_ids.include?(answer.id.to_i)
@@ -20,9 +25,11 @@ class Question < ApplicationRecord
     end
   end
 
-  after_create :calculate_reputation
-
   private
+
+  def subscribe_author
+    subscriptions.create(user: author)
+  end
 
   def calculate_reputation
     ReputationJob.perform_later(self)

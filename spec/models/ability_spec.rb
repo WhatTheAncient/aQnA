@@ -34,12 +34,16 @@ describe Ability do
     let(:vote_for_answer) { create(:vote, votable: other_answer, user: user) }
     let(:other_vote_for_answer) { create(:vote, votable: other_answer, user: another_voter) }
 
+    let(:subscription) { create(:subscription, user: user) }
+    let(:other_subscription) { create(:subscription, user: other) }
+
     it { should be_able_to :read, :all }
     it { should_not be_able_to :manage, :all }
 
     it { should be_able_to :create, Question }
     it { should be_able_to :create, Comment }
     it { should be_able_to :create, Answer }
+    it { should be_able_to :create, Subscription }
 
     context 'voting' do
       describe 'for question' do
@@ -84,6 +88,9 @@ describe Ability do
 
     it { should be_able_to :destroy, answer.links.first }
     it { should_not be_able_to :destroy, other_answer.links.first }
+
+    it { should be_able_to :destroy, subscription }
+    it { should_not be_able_to :destroy, other_subscription }
 
     let!(:access_token) { create(:access_token, resource_owner_id: user.id) }
 

@@ -11,6 +11,10 @@ FactoryBot.define do
       title { nil }
     end
 
+    trait :with_subscriptions do
+      subscriptions { FactoryBot.create_list(:subscription, 3) }
+    end
+
     trait :with_answers do
       answers { FactoryBot.create_list(:answer, 5) }
     end

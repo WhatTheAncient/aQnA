@@ -10,6 +10,7 @@ class User < ApplicationRecord
            foreign_key: 'user_id', dependent: :destroy
   has_many :rewards, dependent: :destroy
   has_many :votes, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
 
   def author_of?(resource)
     resource.user_id == id
@@ -21,5 +22,13 @@ class User < ApplicationRecord
 
   def vote_for(votable)
     votes.find_by(votable: votable)
+  end
+
+  def subscribe_on(question)
+    subscriptions.find_by(question_id: question.id)
+  end
+
+  def subscribed_on?(question)
+    !!subscribe_on(question)
   end
 end

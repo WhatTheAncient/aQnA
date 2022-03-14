@@ -8,6 +8,18 @@
 
     = link_to 'See Answers', question, class: 'btn'
   - else
+    .subscribe
+      - if current_user
+        - if !current_user.subscribed_on?(@question)
+          = link_to 'Subscribe', subscriptions_path(question_id: @question.id),
+                  class: 'btn btn-success subscribe-link', remote: true, method: :post
+          = link_to 'Unsubscribe', subscriptions_path(id: current_user.subscribe_on(@question)),
+                  class: 'btn btn-danger unsubscribe-link d-none', remote: true, method: :delete
+        - elsif can?(:destroy, current_user.subscribe_on(@question))
+          = link_to 'Subscribe', subscriptions_path(question_id: @question.id),
+                  class: 'btn btn-success subscribe-link d-none', remote: true, method: :post
+          = link_to 'Unsubscribe', subscriptions_path(id: current_user.subscribe_on(@question)),
+                  class: 'btn btn-danger unsubscribe-link', remote: true, method: :delete
     .reward
       - if question.reward
         p Reward:
