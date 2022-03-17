@@ -9,6 +9,8 @@ RSpec.describe Question, type: :model do
   it { should belong_to(:author) }
   it { should belong_to(:best_answer).optional }
   it { should have_many(:answers).dependent(:destroy) }
+  it { should have_many(:subscriptions).dependent(:destroy) }
+
   it { should have_one(:reward).dependent(:destroy) }
 
   it { should validate_presence_of :title }
@@ -37,6 +39,16 @@ RSpec.describe Question, type: :model do
       answer = create(:answer)
       question.set_best_answer(answer)
       expect(question.best_answer.id).to_not eq answer.id
+    end
+  end
+
+  describe 'reputation' do
+    let(:question) { build(:question) }
+
+    it 'calls Services::ReputationJob' do
+      expect(ReputationJob).to receive(:perform_later).with(question)
+
+      question.save!
     end
   end
 end

@@ -1,0 +1,5 @@
+' Hello, #{@user.name}, this is daily digest from aQnA.com
+' New questions from the last day:
+- @questions.each do |question|
+  = "Title: #{question.title}"
+  = "Body: #{question.body}"
